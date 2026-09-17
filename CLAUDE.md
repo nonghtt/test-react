@@ -26,7 +26,7 @@
 
 ## 워크플로
 
-1. Claude가 `exercises/NN-이름.md` 작성 → `docs/ROADMAP.md` 단계 상태를 🟡로 → 커밋.
+1. Claude가 `exercises/NN-이름.md`와 `src/starters/StarterNN.jsx` 작성 → `docs/ROADMAP.md` 단계 상태를 🟡로 → 커밋.
 2. 사용자가 `src/`에서 구현하고 커밋 (커밋은 사용자가 직접 해도 되고 Claude에게 시켜도 됨).
 3. 사용자가 "NN 완료" 라고 하면 Claude는 `git diff <이전 실습 커밋>..HEAD` 로 변경분만 리뷰.
 4. 리뷰 후 `docs/PROGRESS.md`에 기록, 통과하면 `docs/ROADMAP.md`의 개념 상태를 갱신하고 커밋.
@@ -39,10 +39,15 @@
 - 통과 기준: 실습 파일의 완성 조건 전부 + 개념 오해 없음.
 - 실습 범위를 벗어난 지적(성능 최적화, 접근성 등)은 "나중에" 라고만 짧게 언급.
 
-## UI / CSS
+## UI / CSS / 마크업
 
-- 스타일은 Claude가 `src/styles/`에 미리 만든다. 사용자는 `docs/UI.md`의 클래스를 `className`으로 쓰기만 한다.
-- 실습에 새 UI가 필요하면 Claude가 클래스를 추가하고 `docs/UI.md`를 갱신한다.
+**사용자는 CSS와 마크업을 작성하지 않는다.** 학습 대상은 React 로직이다.
+
+- CSS는 Claude가 `src/styles/`에 미리 만든다.
+- 마크업도 Claude가 만든다. 모든 실습은 `src/starters/StarterNN.jsx`(하드코딩된 정적 화면)와 함께 낸다. 스타터에는 그 실습에 필요한 **모든 시각 상태**(선택됨, 비어 있음, 로딩, 에러, 유효성 오류 등)를 하드코딩으로 담아서, 사용자가 태그나 className을 새로 만들 일이 없게 한다.
+- 사용자의 일: 스타터 마크업을 잘라서 컴포넌트로 나누고, 하드코딩 값을 props·데이터·state로 바꾸고, 이벤트와 훅을 붙이는 것.
+- 실습에 새 UI가 필요하면 Claude가 클래스를 추가하고 `docs/UI.md`를 갱신한다. `docs/UI.md`는 참고 자료일 뿐, 사용자가 보고 조립하라는 용도가 아니다.
+- 리뷰에서 마크업·스타일 품질은 평가하지 않는다.
 
 ## 기술 스택
 
