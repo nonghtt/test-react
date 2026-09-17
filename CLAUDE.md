@@ -45,6 +45,7 @@
 
 - CSS는 Claude가 `src/styles/`에 미리 만든다.
 - 마크업도 Claude가 만든다. 모든 실습은 `src/starters/StarterNN.jsx`(하드코딩된 정적 화면)와 함께 낸다. 스타터에는 그 실습에 필요한 **모든 시각 상태**(선택됨, 비어 있음, 로딩, 에러, 유효성 오류 등)를 하드코딩으로 담아서, 사용자가 태그나 className을 새로 만들 일이 없게 한다.
+- 스타터 미리보기: `http://localhost:5173/?starter=NN` (`src/main.jsx`가 `src/starters/StarterNN.jsx`를 App 대신 렌더링). 파일명은 반드시 `Starter<NN>.jsx` 형식.
 - 사용자의 일: 스타터 마크업을 잘라서 컴포넌트로 나누고, 하드코딩 값을 props·데이터·state로 바꾸고, 이벤트와 훅을 붙이는 것.
 - 실습에 새 UI가 필요하면 Claude가 클래스를 추가하고 `docs/UI.md`를 갱신한다. `docs/UI.md`는 참고 자료일 뿐, 사용자가 보고 조립하라는 용도가 아니다.
 - 리뷰에서 마크업·스타일 품질은 평가하지 않는다.
