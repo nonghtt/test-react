@@ -440,6 +440,34 @@
   width: 72px;
   height: 72px;
 }
+.avatar-sm {
+  width: 28px;
+  height: 28px;
+}
+
+/* 겹쳐 보이는 아바타 묶음 */
+.avatar-group {
+  display: flex;
+  align-items: center;
+}
+.avatar-group .avatar {
+  border: 2px solid var(--surface);
+}
+.avatar-group .avatar + .avatar {
+  margin-left: -8px;
+}
+
+/* 배지 여러 개를 촘촘하게 나열 */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* flex 컨테이너 안에서 오른쪽 끝으로 밀기 */
+.push-right {
+  margin-left: auto;
+}
 
 .counter {
   font-size: 2rem;

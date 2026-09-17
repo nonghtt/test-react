@@ -106,6 +106,15 @@ CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니
 
 `badge` + `badge-primary` / `badge-success` / `badge-warn` / `badge-danger`
 
+색 변형 없이 `badge`만 쓰면 회색 기본 배지(태그용). 여러 개를 촘촘히 나열할 때는 `tag-list`로 감쌉니다.
+
+```jsx
+<div className="tag-list">
+  <span className="badge">React</span>
+  <span className="badge">CSS</span>
+</div>
+```
+
 ## 탭
 
 ```jsx
@@ -130,7 +139,9 @@ CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니
 
 | 클래스 | 용도 |
 |---|---|
-| `avatar` / `avatar avatar-lg` | 원형 이미지 |
+| `avatar` / `avatar avatar-lg` / `avatar avatar-sm` | 원형 이미지 (40px / 72px / 28px) |
+| `avatar-group` | 아바타 여러 개를 겹쳐서 나열 (`avatar avatar-sm`과 함께) |
+| `push-right` | flex 컨테이너 안에서 오른쪽 끝으로 밀기 |
 | `counter` | 큰 숫자 표시 |
 | `modal-backdrop` > `modal` | 모달 |
 | `sr-only` | 스크린리더 전용 텍스트 |
