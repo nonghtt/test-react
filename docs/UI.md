@@ -1,6 +1,6 @@
 # UI 클래스 레퍼런스
 
-CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니다. 실습에서는 **CSS를 쓰지 말고** 아래 클래스를 `className`으로 붙이기만 하세요. 필요한 클래스가 없으면 요청하면 추가합니다.
+CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니다. 실습에서는 **CSS를 쓰지 말고** 아래 클래스를 `className`으로 붙이기만 하세요. 필요한 클래스가 없으면 요청하면 추가합니다.
 
 - `src/styles/base.css` — 리셋, 색/간격 변수, 다크모드
 - `src/styles/ui.css` — 아래 컴포넌트 클래스
@@ -17,7 +17,7 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 | `grid` | 반응형 카드 그리드 (220px 최소) |
 | `divider` | `<hr className="divider" />` |
 
-```tsx
+```jsx
 <div className="container stack">
   <header className="row row-between">
     <h1>제목</h1>
@@ -29,7 +29,7 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 
 ## 헤더 / 네비게이션 (7단계 라우팅용)
 
-```tsx
+```jsx
 <header className="header">
   <span className="brand">MyApp</span>
   <nav className="nav">
@@ -41,7 +41,7 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 
 ## 카드
 
-```tsx
+```jsx
 <div className="card">            {/* 선택 상태: className="card selected" */}
   <div className="card-title">제목</div>
   <p className="card-desc">설명 텍스트</p>
@@ -64,14 +64,14 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 | `btn-sm` | 작은 크기 |
 | `btn-block` | 가로 100% |
 
-```tsx
+```jsx
 <button className="btn btn-primary" disabled={saving}>저장</button>
 <button className="btn btn-danger btn-sm">삭제</button>
 ```
 
 ## 폼
 
-```tsx
+```jsx
 <form className="stack">
   <div className="field">
     <label className="label" htmlFor="name">이름</label>
@@ -92,7 +92,7 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 
 ## 리스트
 
-```tsx
+```jsx
 <ul className="list">
   <li className="list-item">                {/* 완료: "list-item done", 선택: "list-item active" */}
     <input type="checkbox" />
@@ -108,7 +108,7 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 
 ## 탭
 
-```tsx
+```jsx
 <div className="tabs">
   <button className="tab active">전체</button>
   <button className="tab">진행중</button>
@@ -117,7 +117,7 @@ CSS는 미리 만들어져 있고 `src/main.tsx`에서 전역으로 import됩니
 
 ## 상태 표시 (4단계 데이터 페칭용)
 
-```tsx
+```jsx
 {loading && <div className="loading"><div className="spinner" /> 불러오는 중…</div>}
 {error && <div className="alert alert-error">{error}</div>}
 {items.length === 0 && <div className="empty">아직 항목이 없습니다</div>}

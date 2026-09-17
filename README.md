@@ -13,4 +13,4 @@ npm run dev     # http://localhost:5173
 npm run lint
 ```
 
-스택: Vite 8 · React 19 · TypeScript 6 · oxlint
+스택: Vite 8 · React 19 · JavaScript · oxlint

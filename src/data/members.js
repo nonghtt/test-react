@@ -1,12 +1,5 @@
-export type Member = {
-  id: number
-  name: string
-  role: string
-  avatar: string
-  online: boolean
-}
-
-export const members: Member[] = [
+// 팀원 데이터. 각 항목: { id, name, role, avatar, online }
+export const members = [
   { id: 1, name: '김하늘', role: '프론트엔드', avatar: 'https://i.pravatar.cc/80?img=1', online: true },
   { id: 2, name: '이준서', role: '백엔드', avatar: 'https://i.pravatar.cc/80?img=12', online: false },
   { id: 3, name: '박서연', role: '디자이너', avatar: 'https://i.pravatar.cc/80?img=5', online: true },
