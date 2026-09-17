@@ -13,7 +13,11 @@ export default function Starter00() {
       <div className="grid">
         {/* 온라인 + 선택 안 됨 */}
         <div className="card stack-sm">
-          <img className="avatar avatar-lg" src="https://i.pravatar.cc/80?img=1" alt="" />
+          <img
+            className="avatar avatar-lg"
+            src="https://i.pravatar.cc/80?img=1"
+            alt=""
+          />
           <div className="card-title">김하늘</div>
           <p className="card-desc">프론트엔드</p>
           <span className="badge badge-success">온라인</span>
@@ -24,7 +28,11 @@ export default function Starter00() {
 
         {/* 오프라인 — 배지가 아예 없음 */}
         <div className="card stack-sm">
-          <img className="avatar avatar-lg" src="https://i.pravatar.cc/80?img=12" alt="" />
+          <img
+            className="avatar avatar-lg"
+            src="https://i.pravatar.cc/80?img=12"
+            alt=""
+          />
           <div className="card-title">이준서</div>
           <p className="card-desc">백엔드</p>
           <div className="card-footer">
@@ -34,7 +42,11 @@ export default function Starter00() {
 
         {/* 온라인 + 선택됨 — card에 selected, 버튼은 btn-primary + 글자 변경 */}
         <div className="card selected stack-sm">
-          <img className="avatar avatar-lg" src="https://i.pravatar.cc/80?img=5" alt="" />
+          <img
+            className="avatar avatar-lg"
+            src="https://i.pravatar.cc/80?img=5"
+            alt=""
+          />
           <div className="card-title">박서연</div>
           <p className="card-desc">디자이너</p>
           <span className="badge badge-success">온라인</span>
@@ -44,5 +56,5 @@ export default function Starter00() {
         </div>
       </div>
     </div>
-  )
+  );
 }

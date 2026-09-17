@@ -1,12 +1,28 @@
-function App() {
+import { useState } from "react";
+import { members } from "./data/members";
+import MemberCard from "./Components/MemberCard";
+
+export default function App() {
+  const [totalMembers] = useState(members);
+  const teamRoles = ["프론트엔드", "백엔드", "디자이너"];
+
+  const teamMembers = totalMembers.filter((member) => {
+    return teamRoles.includes(member.role);
+  });
+
+  const teamMembersCounts = teamMembers.length;
+
   return (
     <div className="container stack">
-      <h1>React 실습</h1>
-      <p className="muted">
-        <code>exercises/00-first-components.md</code>를 열고 이 내용을 지운 뒤 시작하세요.
-      </p>
+      <header className="row row-between">
+        <h1>팀원 목록</h1>
+        <span className="muted">총 {teamMembersCounts}명</span>
+      </header>
+      <div className="grid">
+        {teamMembers.map((member) => {
+          return <MemberCard key={member.id} member={member}></MemberCard>;
+        })}
+      </div>
     </div>
-  )
+  );
 }
-
-export default App
