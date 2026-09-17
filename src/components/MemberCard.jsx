@@ -18,7 +18,7 @@ export default function MemberCard({ member }) {
           className={`btn btn-sm ${selected ? "btn-primary" : ""}`}
           onClick={toggleSelect}
         >
-          {selected ? "선택해제" : "선택"}
+          {selected ? "선택 해제" : "선택"}
         </button>
       </div>
     </div>
