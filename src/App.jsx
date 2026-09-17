@@ -1,20 +1,24 @@
-import { members } from "./data/members";
-import MemberCard from "./components/MemberCard";
+import { teams } from "./data/teams";
+import Section from "./components/Section";
 
 export default function App() {
-  const totalMembersCounts = members.length;
+  let totalProjectCount = 0;
+  // let totalProjectCount = teams.reduce(
+  //   (sum, team) => sum + team.projects.length,
+  //   0,
+  // );
 
   return (
     <div className="container stack">
       <header className="row row-between">
-        <h1>팀원 목록</h1>
-        <span className="muted">총 {totalMembersCounts}명</span>
+        <h1>프로젝트 현황</h1>
+        <span className="muted">총 {totalProjectCount}개</span>
       </header>
-      <div className="grid">
-        {members.map((member) => {
-          return <MemberCard key={member.id} member={member}></MemberCard>;
+      <section className="stack">
+        {teams.map((team) => {
+          return <Section teams={team} key={team.id}></Section>;
         })}
-      </div>
+      </section>
     </div>
   );
 }
