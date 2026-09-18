@@ -142,6 +142,8 @@ CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니
 | `avatar` / `avatar avatar-lg` / `avatar avatar-sm` | 원형 이미지 (40px / 72px / 28px) |
 | `avatar-group` | 아바타 여러 개를 겹쳐서 나열 (`avatar avatar-sm`과 함께) |
 | `push-right` | flex 컨테이너 안에서 오른쪽 끝으로 밀기 |
+| `qty` | +/- 버튼 사이의 수량 숫자 |
+| `emoji-lg` | 카드 상단의 큰 이모지 아이콘 |
 | `counter` | 큰 숫자 표시 |
 | `modal-backdrop` > `modal` | 모달 |
 | `sr-only` | 스크린리더 전용 텍스트 |

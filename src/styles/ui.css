@@ -469,6 +469,20 @@
   margin-left: auto;
 }
 
+/* 수량 표시 — +/- 버튼 사이의 숫자 */
+.qty {
+  min-width: 2ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* 카드 상단의 큰 이모지 아이콘 */
+.emoji-lg {
+  font-size: 2rem;
+  line-height: 1;
+}
+
 .counter {
   font-size: 2rem;
   font-weight: 700;
