@@ -1,24 +1,14 @@
-export default function Badge({ tag }) {
-  const statusConfig = {
-    active: {
-      label: "진행 중",
-      className: "badge-primary",
-    },
-    delayed: {
-      label: "지연",
-      className: "badge-danger",
-    },
-    done: {
-      label: "완료",
-      className: "badge-success",
-    },
+export default function Badge({ tone = "", children }) {
+  const color = {
+    primary: "badge-primary",
+    success: "badge-success",
+    warn: "badge-warn",
+    danger: "badge-danger",
   };
 
-  const config = statusConfig[tag] || { label: tag, className: "" };
-
   return (
-    <>
-      <span className={`badge ${config.className}`}>{config.label}</span>
-    </>
+    <span className={`badge${color[tone] ? ` ${color[tone]}` : ""}`}>
+      {children}
+    </span>
   );
 }

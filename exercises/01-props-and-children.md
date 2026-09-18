@@ -48,17 +48,17 @@
 
 ## 완성 조건
 
-- [ ] `Badge`, `Section`, `ProjectCard`, `AvatarGroup`이 `src/components/`에 있다
-- [ ] `Badge`와 `Section`을 위 예시와 똑같은 모양으로 사용한다
+- [x] `Badge`, `Section`, `ProjectCard`, `AvatarGroup`이 `src/components/`에 있다
+- [x] `Badge`와 `Section`을 위 예시와 똑같은 모양으로 사용한다
 - [ ] 상태 배지와 태그가 모두 `Badge`로 그려진다 (`className="badge …"`가 `Badge.jsx` 밖에 없다)
-- [ ] 팀 3개 · 프로젝트 6개가 모두 보이고, 상단에 `총 6개`가 데이터에서 계산되어 나온다
-- [ ] 데이터 팀: 개수 표시 없음(`0`도 안 보임) + 빈 상태 상자
+- [x] 팀 3개 · 프로젝트 6개가 모두 보이고, 상단에 `총 6개`가 데이터에서 계산되어 나온다
+- [x] 데이터 팀: 개수 표시 없음(`0`도 안 보임) + 빈 상태 상자
 - [ ] "결제 페이지 리뉴얼" 카드: 설명 · `tag-list` · `avatar-group` 엘리먼트가 DOM에 없다 (개발자 도구로 확인)
-- [ ] 모든 `map`에 적절한 `key`가 있고 콘솔에 경고가 없다
-- [ ] state를 쓰지 않았다 (`useState` 없음)
-- [ ] `npm run lint` 경고 없음, 브라우저 콘솔 에러 없음
-- [ ] 스타터에 없는 태그 · className · CSS를 새로 만들지 않았다
-- [ ] `App.jsx`에 하드코딩된 팀 · 프로젝트 정보가 없고 `Starter01`을 import하지 않는다
+- [x] 모든 `map`에 적절한 `key`가 있고 콘솔에 경고가 없다
+- [x] state를 쓰지 않았다 (`useState` 없음)
+- [x] `npm run lint` 경고 없음, 브라우저 콘솔 에러 없음
+- [x] 스타터에 없는 태그 · className · CSS를 새로 만들지 않았다
+- [x] `App.jsx`에 하드코딩된 팀 · 프로젝트 정보가 없고 `Starter01`을 import하지 않는다
 
 ## 생각해볼 질문 (완료 보고 때 답변)
 
