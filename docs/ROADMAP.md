@@ -13,7 +13,7 @@
 | # | 단계 | 실습 파일 | 상태 |
 |---|---|---|---|
 | 0 | 첫 컴포넌트 (진단) | `exercises/00-first-components.md` | ✅ |
-| 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | 🟡 |
+| 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | ✅ |
 | 2 | state와 이벤트 | `exercises/02-*.md` | ⬜ |
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-*.md` | ⬜ |
 | 4 | useEffect · 데이터 페칭 | `exercises/04-*.md` | ⬜ |
@@ -36,11 +36,11 @@
 |---|---|---|
 | JSX 문법 (표현식, 속성, className, 프래그먼트) | ✅ | 00. 템플릿 리터럴로 조건부 className |
 | 함수 컴포넌트 정의와 합성 | ✅ | 00 |
-| props 전달과 구조 분해 | ✅ | 00. prop 이름 불일치 실수 2회 — 01에서 재확인 |
-| `children` | ⬜ | |
-| 조건부 렌더링 (`&&`, 삼항, early return) | 🟡 | 00에서 삼항만 사용 |
-| 리스트 렌더링과 `key` | 🟡 | 00에서 id 사용. index가 위험한 이유는 아직 설명 못함 |
-| 컴포넌트를 파일로 분리하는 기준 | ⬜ | |
+| props 전달과 구조 분해 | ✅ | 00·01. 기본값(`tone = ""`), 인터페이스 개념 이해 |
+| `children` | ✅ | 01. `Badge`·`Section`. 문서보다 Vue slot 비유로 이해 |
+| 조건부 렌더링 (`&&`, 삼항, early return) | ✅ | 01. `&&`의 `0` 함정 직접 확인. early return은 3회 만에 성공 — 02에서 재확인 |
+| 리스트 렌더링과 `key` | ✅ | 01. 3단계 중첩. index key 문제를 정확히 설명 |
+| 컴포넌트를 파일로 분리하는 기준 | ✅ | 01. 범용(`Badge`·`Section`) vs 전용(`ProjectCard`), 레이아웃 컴포넌트 |
 
 ### 2. state · 이벤트
 
@@ -61,7 +61,7 @@
 | 상태 끌어올리기 (lifting state up) | ⬜ | |
 | 부모→자식 콜백으로 데이터 올리기 | ⬜ | |
 | 어느 컴포넌트가 state를 가져야 하는지 결정 | 🟡 | 00에서 단일 선택 vs 독립 토글 논의 |
-| 컴포넌트 분리 / 책임 나누기 | ⬜ | |
+| 컴포넌트 분리 / 책임 나누기 | 🟡 | 01. 도메인 지식 위치(status는 `ProjectCard`, tone→class는 `Badge`). 래퍼 위치 실수 반복 |
 | 폼 유효성 검사 흐름 | ⬜ | |
 
 ### 4. 이펙트 · 비동기
