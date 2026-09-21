@@ -16,7 +16,7 @@
 | 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | ✅ |
 | 2 | state와 이벤트 | `exercises/02-state-and-events.md` | ✅ |
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-lifting-state-up.md` | ✅ |
-| 4 | useEffect · 데이터 페칭 | `exercises/04-*.md` | ⬜ |
+| 4 | useEffect · 데이터 페칭 | `exercises/04-effects-and-fetching.md` | 🟡 |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-*.md` | ⬜ |
 | 6 | Context · useReducer | `exercises/06-*.md` | ⬜ |
 | 7 | 라우팅 | `exercises/07-*.md` | ⬜ |
