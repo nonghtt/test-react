@@ -14,7 +14,7 @@
 |---|---|---|---|
 | 0 | 첫 컴포넌트 (진단) | `exercises/00-first-components.md` | ✅ |
 | 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | ✅ |
-| 2 | state와 이벤트 | `exercises/02-state-and-events.md` | 🟡 |
+| 2 | state와 이벤트 | `exercises/02-state-and-events.md` | ✅ |
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-*.md` | ⬜ |
 | 4 | useEffect · 데이터 페칭 | `exercises/04-*.md` | ⬜ |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-*.md` | ⬜ |
@@ -46,13 +46,13 @@
 
 | 개념 | 상태 | 비고 |
 |---|---|---|
-| `useState` 기본 | 🟡 | 00 맛보기. 불변 상수를 state에 넣었다가 제거 |
-| 이벤트 핸들러 (onClick, onChange, onSubmit, e.preventDefault) | ⬜ | |
-| 제어 컴포넌트 (controlled input) | ⬜ | |
-| state 불변성 (객체/배열 업데이트) | ⬜ | |
-| 함수형 업데이트 `setX(prev => …)` | ⬜ | |
-| state는 스냅샷이다 (렌더링 모델) | ⬜ | |
-| 파생 값은 state로 두지 않기 | ⬜ | |
+| `useState` 기본 | ✅ | 00 맛보기(불변 상수를 state에 넣었다가 제거) · 02에서 cart·알림·요청사항 |
+| 이벤트 핸들러 (onClick, onChange, onSubmit, e.preventDefault) | ✅ | 02. 자식→부모 콜백(`onSelect`), submit + `preventDefault` |
+| 제어 컴포넌트 (controlled input) | ✅ | 02. textarea `value`+`onChange`, 글자 수·초과 상태 |
+| state 불변성 (객체/배열 업데이트) | ✅ | 02. 스프레드로 추가·수정, rest 구조분해로 삭제. 직접 수정 없음 |
+| 함수형 업데이트 `setX(prev => …)` | 🟡 | 02. 전부 이 형태로 작성했으나 직접 값 전달과의 차이는 미설명 — 03 |
+| state는 스냅샷이다 (렌더링 모델) | 🟡 | 02. `setTimeout` 실험으로 확인, 이유는 설명을 들음 — 03에서 재확인 |
+| 파생 값은 state로 두지 않기 | ✅ | 02. 소계·총 수량·합계·배지 전부 계산. 합계를 state로 뒀을 때의 버그도 설명함 |
 
 ### 3. 상태 설계
 
@@ -62,7 +62,7 @@
 | 부모→자식 콜백으로 데이터 올리기 | ⬜ | |
 | 어느 컴포넌트가 state를 가져야 하는지 결정 | 🟡 | 00에서 단일 선택 vs 독립 토글 논의 |
 | 컴포넌트 분리 / 책임 나누기 | 🟡 | 01. 도메인 지식 위치(status는 `ProjectCard`, tone→class는 `Badge`). 래퍼 위치 실수 반복 |
-| 폼 유효성 검사 흐름 | ⬜ | |
+| 폼 유효성 검사 흐름 | ✅ | 02. 글자 수 제한 → invalid 클래스 + 제출 버튼 비활성 |
 
 ### 4. 이펙트 · 비동기
 
