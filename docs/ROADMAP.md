@@ -15,7 +15,7 @@
 | 0 | 첫 컴포넌트 (진단) | `exercises/00-first-components.md` | ✅ |
 | 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | ✅ |
 | 2 | state와 이벤트 | `exercises/02-state-and-events.md` | ✅ |
-| 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-lifting-state-up.md` | 🟡 |
+| 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-lifting-state-up.md` | ✅ |
 | 4 | useEffect · 데이터 페칭 | `exercises/04-*.md` | ⬜ |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-*.md` | ⬜ |
 | 6 | Context · useReducer | `exercises/06-*.md` | ⬜ |
@@ -50,18 +50,18 @@
 | 이벤트 핸들러 (onClick, onChange, onSubmit, e.preventDefault) | ✅ | 02. 자식→부모 콜백(`onSelect`), submit + `preventDefault` |
 | 제어 컴포넌트 (controlled input) | ✅ | 02. textarea `value`+`onChange`, 글자 수·초과 상태 |
 | state 불변성 (객체/배열 업데이트) | ✅ | 02. 스프레드로 추가·수정, rest 구조분해로 삭제. 직접 수정 없음 |
-| 함수형 업데이트 `setX(prev => …)` | 🟡 | 02. 전부 이 형태로 작성했으나 직접 값 전달과의 차이는 미설명 — 03 |
-| state는 스냅샷이다 (렌더링 모델) | 🟡 | 02. `setTimeout` 실험으로 확인, 이유는 설명을 들음 — 03에서 재확인 |
+| 함수형 업데이트 `setX(prev => …)` | ✅ | 03. 실험으로 직접 확인(3번 호출 → 1개만 추가, 마지막 것이 남음). 기준도 스스로 세움 — "이전 값에 의존하면 `prev`" |
+| state는 스냅샷이다 (렌더링 모델) | ✅ | 03. "렌더링 당시의 값을 갖고 하기 때문에 3개가 안 들어간다"를 본인 문장으로 설명. 12(c) 로그 실험은 미실행 |
 | 파생 값은 state로 두지 않기 | ✅ | 02. 소계·총 수량·합계·배지 전부 계산. 합계를 state로 뒀을 때의 버그도 설명함 |
 
 ### 3. 상태 설계
 
 | 개념 | 상태 | 비고 |
 |---|---|---|
-| 상태 끌어올리기 (lifting state up) | ⬜ | |
-| 부모→자식 콜백으로 데이터 올리기 | ⬜ | |
-| 어느 컴포넌트가 state를 가져야 하는지 결정 | 🟡 | 00에서 단일 선택 vs 독립 토글 논의 |
-| 컴포넌트 분리 / 책임 나누기 | 🟡 | 01. 도메인 지식 위치(status는 `ProjectCard`, tone→class는 `Badge`). 래퍼 위치 실수 반복 |
+| 상태 끌어올리기 (lifting state up) | ✅ | 03. 편집 state를 `TodoItem` → `TodoList`로 올림. 형제끼리 값을 볼 수 없어 공통 부모에 둔다는 기준을 설명 |
+| 부모→자식 콜백으로 데이터 올리기 | ✅ | 03. 추가·토글·삭제·편집 저장·탭 전환 전부 콜백. setter를 그대로 내려보내도 되는 경우와 감싸야 하는 경우를 구분 |
+| 어느 컴포넌트가 state를 가져야 하는지 결정 | ✅ | 03. 세 값이 각각 다른 높이에 — 필터는 `App`(Tab·TodoList 형제), 편집 대상 id는 `TodoList`, 편집 중 입력값은 `TodoItem`. 반대로 뒀을 때 무엇이 깨지는지 설명 |
+| 컴포넌트 분리 / 책임 나누기 | ✅ | 01·03. `Tab`은 `todos`를 모르고 개수를 받기만 함, `BottomText`는 `children`만 받는 껍데기. 계산은 아는 쪽에서 |
 | 폼 유효성 검사 흐름 | ✅ | 02. 글자 수 제한 → invalid 클래스 + 제출 버튼 비활성 |
 
 ### 4. 이펙트 · 비동기
