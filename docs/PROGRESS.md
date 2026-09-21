@@ -4,7 +4,7 @@
 
 - **진행 중인 실습**: `exercises/02-state-and-events.md`
 - **마지막 리뷰 커밋**: `c670d89` (02 1차) — 2차 리뷰는 미커밋 작업 트리 기준
-- **다음 할 일**: 02는 통과 보류(정정). 남은 것 ① `CartItems.jsx`의 `key={index}` ② 리팩토링 중 생긴 소계 회귀(줄마다 `totalPay` 표시) ③ `addToCart`의 `setTimeout` 실험 코드 제거 ④ `Form`의 미사용 `cartItems`(lint 경고 1건) ⑤ 나머지 리팩토링 후보. 정리되면 `feat(02): 보완` 커밋 후 03 출제.
+- **다음 할 일**: 02 통과 확정(2026-09-21). `CartItems`의 `key={item.id}` 수정과 소계 회귀 복구를 확인함. 진행 중인 리팩토링 잔여: `Form.jsx` 최상단 죽은 주석 블록 · `CartItems`에 안 쓰는 `totalPay` prop 전달 · `alert`+`alertMenus` 합치기 · `alert` 이름 · `initializeCart` 이름 · `getQtyByMenuId`의 `Object.values().find()` · `"help false"` 클래스. 정리되면 `feat(02): 보완` 커밋 후 03 출제.
 - **02 0단계 설계(확인됨)**: 메뉴는 상수 / 장바구니 `[{ id, qty }]` state, 상위 컴포넌트에서 관리 / 요청사항 문자열 state / 주문 완료 알림 state / 총액·소계·총 수량·`N개 담김`은 계산. 처음엔 총액을 state로, 알림을 "리렌더링 되면 안 되니 state 아님"으로 답했다가 질문으로 유도 후 수정 — 리뷰 때 실제 코드가 이 설계대로인지 대조.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유) — Vue 비유로 설명하면 빠름.
 - 갱신: 2026-09-21

@@ -14,7 +14,7 @@
 |---|---|---|---|
 | 0 | 첫 컴포넌트 (진단) | `exercises/00-first-components.md` | ✅ |
 | 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | ✅ |
-| 2 | state와 이벤트 | `exercises/02-state-and-events.md` | 🔁 |
+| 2 | state와 이벤트 | `exercises/02-state-and-events.md` | ✅ |
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-*.md` | ⬜ |
 | 4 | useEffect · 데이터 페칭 | `exercises/04-*.md` | ⬜ |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-*.md` | ⬜ |
