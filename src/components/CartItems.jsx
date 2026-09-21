@@ -7,9 +7,9 @@ export default function CartItems({ cart, addItem, deleteItem }) {
 
   return (
     <ul className="list">
-      {cartItems.map((item, index) => {
+      {cartItems.map((item) => {
         return (
-          <li className="list-item" key={index}>
+          <li className="list-item" key={item.id}>
             <span className="list-item-grow">{item.name}</span>
             <button
               className="btn btn-sm btn-ghost"

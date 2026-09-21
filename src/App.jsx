@@ -17,8 +17,9 @@ export default function App() {
   const totalPay = Object.values(cart).reduce((sum, item) => {
     return sum + item.qty * item.price;
   }, 0);
-  let [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState(false);
   const [alertMenus, setAlertMenus] = useState({ qty: "", pay: 0 });
+  const isCartEmpty = Object.keys(cart).length === 0;
 
   function addToCart(item) {
     setCart((prev) => ({
@@ -30,10 +31,7 @@ export default function App() {
         name: item.name,
       },
     }));
-  }
-
-  function addItem(item) {
-    addToCart(item);
+    setAlert(false);
   }
 
   function deleteItem(item) {
@@ -56,13 +54,17 @@ export default function App() {
     });
   }
 
-  function initializeCart() {
+  function sendOrders() {
     setAlertMenus({
       qty: totalCartCount,
       pay: totalPay,
     });
     setCart({});
-    setAlert(!alert);
+    setAlert(true);
+  }
+
+  function getQtyByMenuId(menuId) {
+    return cart[menuId]?.qty ?? 0;
   }
 
   return (
@@ -74,7 +76,13 @@ export default function App() {
       <Section title="메뉴">
         <div className="grid">
           {menu.map((item) => {
-            return <Card key={item.id} menu={item} onSelect={addToCart}></Card>;
+            return (
+              <Card key={item.id} menu={item} onSelect={addToCart}>
+                {getQtyByMenuId(item.id) !== 0 && (
+                  <Badge tone="primary">{`${getQtyByMenuId(item.id)}개 담김`}</Badge>
+                )}
+              </Card>
+            );
           })}
         </div>
       </Section>
@@ -82,10 +90,14 @@ export default function App() {
       <Section title="장바구니" count={totalCartCount}>
         <CartItems
           cart={cart}
-          addItem={addItem}
+          addItem={addToCart}
           deleteItem={deleteItem}
         ></CartItems>
-        <Form cart={cart} initializeCart={initializeCart}></Form>
+        <Form
+          totalPay={totalPay}
+          isCartEmpty={isCartEmpty}
+          sendOrders={sendOrders}
+        ></Form>
       </Section>
     </div>
   );

@@ -1,18 +1,18 @@
 import { useState } from "react";
 
-export default function Form({ cart, initializeCart }) {
+export default function Form({ totalPay, isCartEmpty, sendOrders }) {
   const [text, setText] = useState("");
   const maxLength = 50;
   const isOverLimit = text.length > maxLength;
 
-  const cartItems = Object.values(cart);
-  const totalPay = cartItems.reduce((sum, item) => {
-    return sum + item.qty * item.price;
-  }, 0);
+  function initializeForm() {
+    setText("");
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    initializeCart();
+    initializeForm();
+    sendOrders();
   }
 
   return (
@@ -27,7 +27,7 @@ export default function Form({ cart, initializeCart }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <p className={`help ${isOverLimit && "error"}`}>
+        <p className={`help ${isOverLimit ? "error" : ""}`}>
           {text.length} / 50자 {isOverLimit && " 50자 이하로 줄여 주세요"}
         </p>
       </div>
@@ -37,7 +37,7 @@ export default function Form({ cart, initializeCart }) {
         <button
           className="btn btn-primary"
           type="submit"
-          disabled={isOverLimit}
+          disabled={isOverLimit || isCartEmpty}
         >
           주문하기
         </button>
