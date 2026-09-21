@@ -1,7 +1,7 @@
-import InputForm from "./components/InputForm";
+import InputForm from "./components/exercises/03/InputForm";
 import { initialTodos, morningRoutine } from "./data/todos";
-import Tab from "./components/Tab";
-import TodoList from "./components/TodoList";
+import Tab from "./components/ui/Tab";
+import TodoList from "./components/exercises/03/TodoList";
 import { useState } from "react";
 
 let nextId = 4;

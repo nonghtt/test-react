@@ -1,5 +1,5 @@
-import AvatarGroup from "./AvatarGroup";
-import Badge from "./Badge";
+import AvatarGroup from "../../ui/AvatarGroup";
+import Badge from "../../ui/Badge";
 
 export default function ProjectCard({ project }) {
   const statusConfig = {

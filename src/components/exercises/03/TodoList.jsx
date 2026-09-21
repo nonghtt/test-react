@@ -1,5 +1,5 @@
-import TodoItem from "../components/TodoItem";
-import BottomText from "../components/BottomText";
+import TodoItem from "./TodoItem";
+import BottomText from "../../ui/BottomText";
 import { useState } from "react";
 
 export default function TodoList({
