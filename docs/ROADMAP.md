@@ -16,7 +16,7 @@
 | 1 | 컴포넌트와 props | `exercises/01-props-and-children.md` | ✅ |
 | 2 | state와 이벤트 | `exercises/02-state-and-events.md` | ✅ |
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-lifting-state-up.md` | ✅ |
-| 4 | useEffect · 데이터 페칭 | `exercises/04-effects-and-fetching.md` | 🟡 |
+| 4 | useEffect · 데이터 페칭 | `exercises/04-effects-and-fetching.md` | ✅ |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-*.md` | ⬜ |
 | 6 | Context · useReducer | `exercises/06-*.md` | ⬜ |
 | 7 | 라우팅 | `exercises/07-*.md` | ⬜ |
@@ -68,12 +68,12 @@
 
 | 개념 | 상태 | 비고 |
 |---|---|---|
-| `useEffect` 기본과 의존성 배열 | ⬜ | |
-| cleanup 함수 | ⬜ | |
-| `fetch` + 로딩/에러/성공 상태 모델링 | ⬜ | |
-| 경쟁 상태 (race condition) 처리 / AbortController | ⬜ | |
-| 이펙트가 필요 없는 경우 판단 | ⬜ | |
-| StrictMode에서 이펙트 두 번 실행되는 이유 | ⬜ | |
+| `useEffect` 기본과 의존성 배열 | ✅ | 04. `[]`/`[keyword]`/생략 세 가지를 직접 실행해보고 차이를 설명(생략 시 매 렌더 실행까지 확인) |
+| cleanup 함수 | ✅ | 04. 호출 시점 두 가지(다음 effect 직전, unmount) 모두 답변. 처음엔 "다음 effect 직전"만 답해 재질문 필요했음 |
+| `fetch` + 로딩/에러/성공 상태 모델링 | ✅ | 04. `App`(판단 안 함) → `BookResult`(loading·error 우선순위) → `BookList`(빈 결과 vs 목록) 3단 분리로 상태 겹침 해결. 컴포넌트 경계를 스스로 설계함 |
+| 경쟁 상태 (race condition) 처리 / AbortController | ✅ | 04. 실험 9를 cleanup 전/후로 직접 실행 — 전: 짧은 검색어(느린 응답)가 늦게 도착해 화면을 덮어씀을 확인, 후: `AbortController`로 해결·콘솔에 취소 로그 확인. "결과가 우연히 맞았을 뿐 메커니즘은 틀렸다"를 스스로 구분해냄(주목할 만한 지점) |
+| 이펙트가 필요 없는 경우 판단 | ✅ | 04. 정렬을 `useState`+`useEffect`로 만드는 함정을 피하고 렌더 중 계산으로 처리. "state로 계산되는 값은 다시 state로 관리할 필요 없다"는 기준을 본인 문장으로 답변 |
+| StrictMode에서 이펙트 두 번 실행되는 이유 | ✅ | 04. 여러 차례 힌트 후 "cleanup 누락/부실을 매번 강제로 드러낸다"로 정리. 04에서 가장 오래 걸린 질문 |
 
 ### 5. 훅 심화 · 렌더링
 
