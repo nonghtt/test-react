@@ -1,114 +1,71 @@
-import InputForm from "./components/exercises/03/InputForm";
-import { initialTodos, morningRoutine } from "./data/todos";
-import Tab from "./components/ui/Tab";
-import TodoList from "./components/exercises/03/TodoList";
+import BookInput from "./components/exercises/04/BookInput";
+import { useEffect } from "react";
 import { useState } from "react";
 
-let nextId = 4;
+import { fetchBooks } from "./api/booksApi";
+import BookResult from "./components/exercises/04/BookResult";
+import Spinner from "./components/ui/Spinner";
 
 export default function App() {
-  const [todos, setTodos] = useState(initialTodos);
+  const [books, setBooks] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const bookCount = books.length;
 
-  const totalTodosCount = todos.length;
-  const waitingTodosCount = todos.filter((todo) => todo.done === false).length;
-  const doneTodosCount = todos.filter((todo) => todo.done === true).length;
+  async function load(query, controller = {}) {
+    setLoading(true);
+    setError(null);
 
-  const tabs = [
-    { id: 1, label: "전체", status: "all", count: totalTodosCount },
-    { id: 2, label: "진행 중", status: "doing", count: waitingTodosCount },
-    { id: 3, label: "완료", status: "completed", count: doneTodosCount },
-  ];
-  const [activeTabId, setActiveTabId] = useState(1);
-  const activeTabStatus = tabs.find((tab) => tab.id === activeTabId).status;
-
-  function addMorningRoutine() {
-    morningRoutine.forEach((routine) => {
-      addTodo(routine);
-    });
+    try {
+      const result = await fetchBooks(query, controller);
+      const sorted = [...result].sort((a, b) => a.title.localeCompare(b.title));
+      setBooks(sorted);
+    } catch (error) {
+      if (error.name === "AbortError") {
+        return;
+      }
+      setError(error);
+      setError(error.message);
+    } finally {
+      if (!controller?.signal?.aborted) {
+        setLoading(false);
+      }
+      console.log("성공이든 실패든 마지막에 한 번");
+    }
   }
 
-  function addTodo(todoInput) {
-    setTodos((prev) => [
-      ...prev,
-      {
-        id: `t${nextId++}`,
-        text: todoInput,
-        done: false,
-      },
-    ]);
-  }
+  useEffect(() => {
+    const controller = new AbortController();
+    // oxlint-disable-next-line react/set-state-in-effect -- 데이터 페칭 자체가 목적인 이펙트라 loading/error를 여기서 동기적으로 갱신하는 게 의도된 동작(외부 시스템과 동기화하는 경우).
+    load(keyword, controller);
 
-  function handleTabBtnClick(id) {
-    setActiveTabId(id);
-  }
-
-  function toggleTodoStatus(id) {
-    setTodos((prev) => {
-      return prev.map((todo) => {
-        return todo.id === id ? { ...todo, done: !todo.done } : todo;
-      });
-    });
-  }
-
-  function onEditBtn(id, text) {
-    setTodos((todos) => {
-      return todos.map((todo) => {
-        return todo.id === id ? { ...todo, text } : todo;
-      });
-    });
-  }
-
-  function onDeleteBtn(id) {
-    setTodos((todos) => {
-      return todos.filter((todo) => {
-        return todo.id !== id;
-      });
-    });
-  }
-
-  function handleCompletedTodos() {
-    setTodos((prev) => {
-      return prev.filter((todo) => todo.done === false);
-    });
-  }
+    return () => {
+      controller.abort();
+    };
+  }, [keyword]);
 
   return (
     <div className="container stack">
       <header className="row row-between">
-        <h1>할 일</h1>
-        <button
-          className="btn btn-sm"
-          type="button"
-          onClick={addMorningRoutine}
-        >
-          아침 루틴 추가
-        </button>
+        <h1>도서 검색</h1>
+        <span className="muted text-sm">{`${bookCount}권`}</span>
       </header>
-      <InputForm addTodo={addTodo}></InputForm>
-      <Tab
-        tabs={tabs}
-        activeTabId={activeTabId}
-        handleTabBtnClick={handleTabBtnClick}
-      ></Tab>
-      <TodoList
-        todos={todos}
-        activeTabStatus={activeTabStatus}
-        toggleTodoStatus={toggleTodoStatus}
-        onEditBtn={onEditBtn}
-        onDeleteBtn={onDeleteBtn}
-      ></TodoList>
-      <div className="row row-between">
-        <span className="muted text-sm">{`${totalTodosCount}개 중 ${doneTodosCount}개 완료`}</span>
-        <button
-          className="btn btn-sm btn-ghost"
-          type="button"
-          disabled={doneTodosCount === 0}
-          onClick={handleCompletedTodos}
-        >
-          완료 항목 지우기
-        </button>
-      </div>
+      <BookInput
+        keyword={keyword}
+        setKeyword={setKeyword}
+        onSubmit={load}
+      ></BookInput>
       <hr className="divider" />
+      {loading ? (
+        <Spinner></Spinner>
+      ) : (
+        <BookResult
+          error={error}
+          books={books}
+          onSearch={() => load(keyword)}
+        ></BookResult>
+      )}
     </div>
   );
 }
