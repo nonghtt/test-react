@@ -2,9 +2,16 @@
 
 ## 현재 상태
 
-- **진행 중인 실습**: 05 커스텀 훅 · ref · 렌더링 이해 (`exercises/05-custom-hooks-refs-rendering.md`, `src/starters/Starter05.jsx`) — 2026-09-22 출제, 사용자 구현 대기.
+- **진행 중인 실습**: 05 커스텀 훅 · ref · 렌더링 이해 (`exercises/05-custom-hooks-refs-rendering.md`, `src/starters/Starter05.jsx`) — 2026-09-22 출제. **Part A 완료(커밋 `3f03b09`), Part B부터 이어서 진행.**
 - **마지막 리뷰 커밋**: `3bfeaae` (04 구현, 통과). 04 피드백 기록은 `c7ea54c`.
-- **다음 할 일**: 사용자가 "05 완료"라고 하면 `git diff c7ea54c..HEAD`로 리뷰. 세 파트(A 커스텀 훅 / B ref / C 렌더링)로 나뉘어 있어 파트별로 중간 질문이 올 수 있음 — 파트 단위로 봐 줘도 됨.
+- **다음 할 일**: Part B(요구 6~8, ref) 시작. 시작 전에 사용자가 **"ref를 어느 컴포넌트에 둘지"**를 7번까지 읽고 정해서 이유와 함께 말하기로 함. 그다음 Part C. 전체가 끝나고 "05 완료"라고 하면 `git diff c7ea54c..HEAD`로 리뷰.
+- **05 Part A 진행 메모(2026-09-22)**: 요구 2·3·4와 실험 A 완료. 동작 확인(빠른 타이핑 시 요청 1회, 천천히 치면 2회, 입력 지연 없음, `다시 시도` 재요청)까지 사용자가 직접 로그로 대조함.
+  - `retry`는 `reloadKey` state를 의존성 배열에 추가해 이펙트를 재트리거하는 방식 — **사용자가 스스로 제안**했고 "이펙트 밖에서 시작한 요청은 취소할 수 없다"는 점도 스스로 짚음.
+  - 막혔던 지점 ①: 커스텀 훅이 처음이라 **호출부를 안 보여주니 진도가 안 나갔다.** 사용자가 "이 함수가 어떻게 쓰일지를 모르니 개발이 어렵다"고 직접 말함. → **새 훅·새 부품을 낼 때는 호출부(App에서 어떻게 쓰는지) 코드를 먼저 보여줄 것.** 실습 파일에 있어도 대화에서 다시 보여주는 게 낫다.
+  - 막혔던 지점 ②: cleanup에서 타이머를 취소하는 방법(= `setTimeout`의 반환 id를 이펙트 안 지역 변수에 받기)에서 오래 막힘. `clearTimeout`을 state 조작(`setTime(delay)`)으로 흉내 내려 했음. 원인은 **"새 이펙트가 옛 이펙트에게 버리라고 알린다"는 잘못된 구도** — "각 이펙트가 자기 뒷정리 쪽지를 남기고 React가 그걸 보관했다가 다음 실행 직전에 부른다"로 교정하니 풀렸다. 이미 쓴 `useBooks`의 `AbortController` 이펙트를 같은 모양으로 나란히 놓고 비교시킨 게 효과적이었음.
+  - 즉시 설명한 JS·API: 섀도잉과 클로저, `x++`는 대입이라 `const`에 못 쓴다는 것(후위는 옛 값을 돌려줌), `clearTimeout` 철자(`clearTimeOut` 오타), 의존성 배열의 세 형태, `setTimeout`/`setInterval` 차이.
+  - 실험 A 결과(질문 1 근거, 사용자가 보관 중): lint `react-hooks(rules-of-hooks): React Hook "useDebouncedValue" is called conditionally.` / 브라우저 `React has detected a change in the order of Hooks called by App.` 사용자가 **"map에 index를 key로 준 것과 같은 문제냐"**고 스스로 비유함 — 위치로 신원을 정하는 구조라는 핵심을 정확히 잡음.
+- **남은 lint 경고 1개**: `src/hooks/useBooks.js:38 react-hooks(exhaustive-deps): missing dependency 'load'`. 04에서도 lint 경고 1개를 남긴 채 "완료" 보고를 했고(4회 연속 약점), 05 완성 조건은 lint 출력 마지막 줄을 보고에 붙이게 되어 있음. Part B/C 중에 정리하도록 유도할 것 — 힌트는 이미 줬음("`load`가 이펙트에서만 불리니 별도 함수로 남아야 하는지 판단하라").
 - **05 리뷰 때 볼 것**: ① `useBooks`의 `retry`가 지금 검색어로 재요청하는지(04의 "훅/컴포넌트가 필요로 하는 값 빠뜨림" 재발 여부 — 질문 2). ② `onClick={retry}` vs `onClick={retry()}` — 04에서 나온 즉시호출/함수참조 혼동이 손에 익었는지. ③ 완성 조건 마지막 항목은 **`npm run lint` 출력 마지막 줄을 보고에 붙이게** 했음 — 안 붙어 있으면 그 항목은 미체크로 간주하고 요청. ④ `useRenderCount`에서 `ref.current`를 렌더 본문에서 증가시켰는지(이펙트 안이어야 함). ⑤ `useDebouncedValue`가 도서 도메인을 아는지. ⑥ Part C에서 `memo`가 안 통한 원인을 `sorted` 배열(렌더마다 새 참조)과 `onSortChange`(새 함수) 두 개로 스스로 찾았는지 — 실험 C-2·C-3 기록으로 확인. ⑦ 질문 5의 마지막("14권에 이 최적화가 필요했나")에서 "측정된 문제가 있을 때만"으로 답하는지 — 무조건 memo를 붙이는 습관이 생기지 않게.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05 실습 파일에서는 `useMemo`를 Vue `computed`의 수동 캐시에 비유해 둠. 개념 질문은 **실험 과제**로 주면 실제로 해 보고 정확히 보고함(04의 실험 9도 예측·전/후 비교까지 정확히 보고). 05는 실험 5개(A, C-1, C-2, C-3 + 완성 상태 확인)로 그 방식을 그대로 씀.
 - **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법은 질문으로 돌리지 말고 바로 설명. 04에서 JS 문법뿐 아니라 `AbortController`·`signal.aborted` 같은 브라우저 API 동작 원리도 같은 기준(질문으로 돌리지 않고 즉시 설명)으로 다뤘고 잘 통했다 — 05 이후에도 이 기준 유지. 05에서 그 기준에 해당하는 것: `setTimeout`/`clearTimeout`, 참조 비교, `useRef`·`memo`·`useMemo`·`useCallback`의 API 모양(실습 파일에 이미 정리돼 있음). "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다.
