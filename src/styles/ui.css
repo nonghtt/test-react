@@ -469,6 +469,12 @@
   margin-left: auto;
 }
 
+/* flex 컨테이너(row) 안에서 남는 폭을 전부 차지 — 입력창 + 버튼 조합용 */
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
 /* 수량 표시 — +/- 버튼 사이의 숫자 */
 .qty {
   min-width: 2ch;

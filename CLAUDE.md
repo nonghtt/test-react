@@ -8,7 +8,7 @@
 - `docs/PROGRESS.md` — 실습별 피드백 기록과 누적 약점 목록.
 - `docs/UI.md` — 미리 만들어 둔 CSS 클래스 레퍼런스.
 - `exercises/NN-*.md` — 실습 문제. 번호가 순서.
-- `src/components/README.md` — 컴포넌트 폴더 규칙. 범용 부품은 `src/components/ui/`, 실습 전용은 `src/components/exercises/NN/` (2026-09-21 정리). 새 실습의 컴포넌트는 `exercises/NN/`에 만들고, `ui/`의 부품은 수정 없이 재사용한다.
+- `src/components/README.md` — 컴포넌트 폴더 규칙. 범용 부품은 `src/components/ui/`, 실습 전용은 `src/components/exercises/NN/` (2026-09-21 정리). 새 실습의 컴포넌트는 `exercises/NN/`에 만들고, `ui/`의 부품은 수정 없이 재사용한다. 커스텀 훅은 `src/hooks/`에 파일 하나당 훅 하나 (05부터).
 
 ## 학습자 설정
 
