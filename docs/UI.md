@@ -124,6 +124,23 @@ CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니
 </div>
 ```
 
+## 칸반 보드 (6단계 Context용)
+
+```jsx
+<div className="board">
+  <section className="column">
+    <div className="column-title">
+      <h3>할 일</h3>
+      <span className="muted text-sm">3</span>
+    </div>
+    <div className="card stack-sm">{/* 카드 */}</div>
+    <div className="empty">카드 없음</div>          {/* 열이 비었을 때 */}
+  </section>
+</div>
+
+<select className="select select-auto">…</select>   {/* row 안에서 폭이 내용만큼만 */}
+```
+
 ## 상태 표시 (4단계 데이터 페칭용)
 
 ```jsx

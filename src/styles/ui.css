@@ -525,3 +525,42 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ---------- 칸반 보드 (06) ---------- */
+
+/* 열을 가로로 나란히. 좁은 화면에서는 세로로 */
+.board {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 열 하나 — 안에 카드(card)들이 세로로 쌓인다 */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--bg-muted);
+  border-radius: var(--radius);
+  min-height: 120px;
+}
+
+/* 열 제목 + 개수 */
+.column-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-1) var(--space-1);
+}
+
+/* row 안에 넣는 select — 기본 select는 폭 100%라 줄을 다 차지한다 */
+.select-auto {
+  width: auto;
+}
