@@ -25,7 +25,7 @@ App
 - `src/starters/Starter06.jsx` — 정적 화면. **http://localhost:5173/?starter=06**
 - `src/data/board.js` — `columns`(열 순서), `initialCards`(카드 8장), `members`(담당자 5명). **수정하지 마세요.**
 
-컴포넌트는 `src/components/exercises/06/`에, `App.jsx`는 이번 실습 화면으로 교체합니다. 05의 `useRenderCount`는 `src/hooks/`에 있는 것을 그대로 씁니다.
+**컴포넌트 6개는 `src/components/exercises/06/`에 미리 나눠 두었습니다** — 전부 정적이고 값은 하드코딩, import만 연결된 상태입니다. `App.jsx`도 `<Board />`를 그리도록 바꿔 두었습니다. 파일을 새로 만들거나 마크업을 자를 일은 없고, 여러분의 일은 하드코딩된 값을 데이터·props·state로 바꾸고 이벤트·리듀서·Context를 붙이는 것입니다. 다른 시각 상태(접힌 카드, 담당자 없음, 빈 열, 「담당자 ▸」)의 마크업은 각 파일 안에 주석으로 있습니다. 05의 `useRenderCount`는 `src/hooks/`에 있는 것을 그대로 씁니다.
 
 컴포넌트가 아닌 파일은 새 폴더에 둡니다.
 
@@ -121,7 +121,7 @@ export function useBoard() {
    - 모르는 `type`이면 `throw`.
    - 안 바뀐 카드는 **같은 객체 그대로** 두세요. `cards.map`에서 해당 카드만 스프레드로 새로 만들고 나머지는 그대로 돌려주면 됩니다. Part C 실험 C-3의 결과가 여기에 달려 있습니다.
 
-2. **트리**를 위 그림대로 `exercises/06/`에 만듭니다. `App`이 `useReducer`를 갖고, 아래로 내려보냅니다.
+2. **트리**는 위 그림대로 `exercises/06/`에 정적으로 있습니다. `App`에 `useReducer`를 두고, 하드코딩된 값을 걷어내며 아래로 내려보냅니다.
    - `App`의 `dispatch`는 **`App` 밖으로 나가지 않습니다.** 자식에게는 03·05처럼 이름 있는 콜백을 내려보냅니다: `onMove(id, …)`, `onFilterChange(…)`. `App`이 그 안에서 `dispatch`를 부릅니다.
    - `BoardHeader`: select는 **제어 컴포넌트**(`value` + `onChange`). `value`는 `App`의 state에서 옵니다. 오른쪽 숫자는 **필터를 통과해 화면에 보이는 카드 수**.
    - `Column`: 열 제목과 **그 열에서 보이는 카드 수**. 필터링을 `Column`에서 하든 `CardList`에서 하든 여러분이 정합니다.
