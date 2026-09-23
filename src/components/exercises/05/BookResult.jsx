@@ -1,7 +1,13 @@
 import BookList from "./BookList";
 import FailText from "../../ui/FailText";
 
-export default function BookResult({ error, books, onSearch }) {
+export default function BookResult({
+  error,
+  books,
+  onSearch,
+  sortBy,
+  setSortBy,
+}) {
   return (
     <>
       {error ? (
@@ -17,7 +23,11 @@ export default function BookResult({ error, books, onSearch }) {
           }
         </FailText>
       ) : (
-        <BookList books={books}></BookList>
+        <BookList
+          books={books}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        ></BookList>
       )}
     </>
   );
