@@ -17,7 +17,7 @@
 | 2 | state와 이벤트 | `exercises/02-state-and-events.md` | ✅ |
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-lifting-state-up.md` | ✅ |
 | 4 | useEffect · 데이터 페칭 | `exercises/04-effects-and-fetching.md` | ✅ |
-| 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-custom-hooks-refs-rendering.md` | 🟡 |
+| 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-custom-hooks-refs-rendering.md` | ✅ |
 | 6 | Context · useReducer | `exercises/06-*.md` | ⬜ |
 | 7 | 라우팅 | `exercises/07-*.md` | ⬜ |
 | 8 | 종합 미니 프로젝트 | `exercises/08-*.md` | ⬜ |
@@ -79,12 +79,12 @@
 
 | 개념 | 상태 | 비고 |
 |---|---|---|
-| 커스텀 훅 추출 (`useXxx`) | ⬜ | |
-| `useRef` (DOM 접근, 렌더와 무관한 값) | ⬜ | |
-| 리렌더링이 언제 일어나는지 | ⬜ | |
-| `useMemo` / `useCallback` — 언제 필요한지 | ⬜ | |
-| `React.memo` | ⬜ | |
-| 훅의 규칙 (최상위, 조건문 금지) | 🟡 | 00에서 컴포넌트 밖 호출 에러 경험 |
+| 커스텀 훅 추출 (`useXxx`) | ✅ | 05. `useBooks`·`useDebouncedValue`·`useRenderCount` 세 개. `useDebouncedValue`는 도메인을 모르는 범용 훅으로 나옴 |
+| `useRef` (DOM 접근, 렌더와 무관한 값) | ✅ | 05. 자동 포커스·`지우기` 후 포커스 복귀(DOM), `useRenderCount`의 카운터(렌더와 무관한 값). React 19에서 `ref`가 일반 prop인 것도 확인 |
+| 리렌더링이 언제 일어나는지 | ✅ | 05. 실험 C-1에서 "부모가 리렌더되면 자식도 props와 무관하게 리렌더"를 스스로 도출. 리렌더와 마운트(언마운트 시 state·ref 폐기)를 구분 |
+| `useMemo` / `useCallback` — 언제 필요한지 | ✅ | 05. 실험 C-2·C-3. `useState` setter가 안정적이라 `useCallback`이 불필요함을 실험으로 확인하고 (b) 선택 |
+| `React.memo` | ✅ | 05. `memo`만으로 안 통하는 이유(`sorted`가 렌더마다 새 참조)를 힌트 없이 찾음. 기준은 "기본은 안 쓰고 측정 후에만" |
+| 훅의 규칙 (최상위, 조건문 금지) | ✅ | 05 실험 A. lint `rules-of-hooks` + 브라우저 "change in the order of Hooks"를 직접 봄. "index를 key로 준 것과 같은 문제"라고 스스로 비유 |
 
 ### 6. 전역 상태
 
