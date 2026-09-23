@@ -1,15 +1,15 @@
 import BoardHeader from "./BoardHeader";
 import Column from "./Column";
+import { columns } from "../../../data/board";
 
-// 정적 버전. 열 3개가 하드코딩되어 있다 — columns 데이터로 map 하는 것부터 시작.
-export default function Board() {
+export default function Board({ cards }) {
   return (
     <div className="container stack">
       <BoardHeader />
       <div className="board">
-        <Column />
-        <Column />
-        <Column />
+        {columns.map((column) => (
+          <Column key={column.id} title={column.title} cards={cards}></Column>
+        ))}
       </div>
     </div>
   );
