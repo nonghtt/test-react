@@ -4,15 +4,16 @@
 
 - **진행 중인 실습**: **06 Context · useReducer** (2026-09-23 출제, `exercises/06-context-and-reducer.md`). 세 파트(A 드릴링+리듀서 / B Context / C 리렌더 실험), 파트마다 커밋 5개(A-1·A-2·B-1·B-2·C).
 - **06 출제 직후 조정 (2026-09-23)**: 사용자 요청으로 컴포넌트 6개(`Board`·`BoardHeader`·`Column`·`CardList`·`Card`·`CardActions`)를 Claude가 **정적·하드코딩 상태로 미리 나누고 import까지 연결**해 뒀다. `App.jsx`도 `<Board />`로 교체. 사용자는 마크업을 자르지 않고 props·state·리듀서·Context만 붙인다. 이유: "중요한 건 컴포넌트끼리 데이터를 넘기고 선언하는 것" — 앞으로도 트리가 깊은 실습은 이렇게 낸다.
-- **마지막 리뷰 커밋**: `8ec9794` (05 Part B·C, 통과). 06 사용자 커밋: `87d4e17`(카드 렌더링·리듀서 뼈대), `8691446`(A-1 진행 중 — useReducer 적용·열별 카드 분류). 둘 다 리뷰 전.
-- **06 Part A-1 진행 상황 (2026-09-27)**: 사용자가 추천 순서 1~5 중 **1단계(열마다 그 열의 카드만)** 진행 중 — `Board`의 `columns.map` 안에서 `status === column.id`로 거르는 것까지 됨. 남은 순서: ② 이동(`card_moved`·`onMove`·`←→ disabled`) ③ 필터(`filter_changed`·제어 select·담당자 조건·헤더 숫자) ④ Card 마무리(펼치기·담당자·「카드 없음」) ⑤ prop 대조표 → A-1 커밋. 두 조건(열·담당자)을 같은 곳에서 거르면 `Column` 개수가 맞는다는 것까지 안내함.
-- **`8691446` 시점에 남아 있는 문제** (Claude가 안내했거나 리뷰 때 짚을 것 — 코드는 고치지 않았음):
-  - `filter` 초기값에 **선택지 목록**(처음엔 열 id 배열, 다음엔 `members` 목록)을 넣음 — "select의 선택지(데이터) vs 지금 골라진 값 하나(state)" 혼동. 두 번 안내했는데 아직 목록. Vue `v-model`에 묶이는 건 선택된 값 하나라는 비유로 설명함.
-  - `Board`에 `useState("all")`(`selectedMember`)을 새로 만들고 `BoardHeader`에 setter를 내림, select는 여전히 `defaultValue` — **리듀서의 `filter`와 같은 정보가 두 곳**(05 `activeTabId` 재발 패턴, 06 리뷰 체크 항목). setter를 내리는 것도 요구 2(`onFilterChange`)와 어긋남. 커밋 직후 "같은 정보가 몇 곳에 있나"를 질문으로만 던짐 → 3단계(필터) 때 답을 확인한다.
+- **마지막 리뷰 커밋**: `8ec9794` (05 Part B·C, 통과). 06 사용자 커밋: `87d4e17`(카드 렌더링·리듀서 뼈대), `8691446`(useReducer 적용·열별 카드 분류), `558e2bd`(filter_changed·필터 콜백 연결·import 대소문자 수정). 전부 리뷰 전.
+- **06 Part A-1 진행 상황 (2026-09-27, `558e2bd` 기준)**: 추천 순서 ① 열별 카드 분류 + `Column` count — **완료**. ③ 필터 — **절반**: `Board`의 `useState` 제거(단일 진실 공급원 이해함), `App`의 `handleFilterChange` → `Board` → `BoardHeader` `onChange`로 연결, 리듀서 `filter_changed` case 추가. 남은 순서: ③ 나머지(filter 초기값·제어 select·담당자 조건·헤더 숫자) ② 이동(`card_moved`·`onMove`·`←→ disabled`) ④ Card 마무리(펼치기·담당자·「카드 없음」) ⑤ prop 대조표 → A-1 커밋.
+- **`558e2bd` 시점에 남아 있는 문제** (안내했거나 리뷰 때 짚을 것 — 코드는 Claude가 고치지 않았음):
+  - `filter` 초기값에 **선택지 목록**(처음엔 열 id 배열, 지금은 `{id:"all"} + members` 목록) — "select의 선택지(데이터) vs 지금 골라진 값 하나(state)" 혼동. **세 번** 안내(`filter: "all"`까지 직접 알려 줌)했는데 아직 목록. 약점 목록 후보.
+  - select가 아직 `defaultValue="all"` — `filter` prop을 받기만 하고 `value`에 안 붙임(lint `no-unused-vars` 경고로 드러남). 제어 컴포넌트 설명은 함.
+  - 콜백 prop 이름이 `handleFilterChange` — 요구 2·7은 `onFilterChange`. 동작엔 문제 없음, prop 대조표 단계에서 확인.
   - `card_moved`가 `{ ...state.cards }` — 배열을 객체에 펼쳐 `cards`·`filter` 키가 사라짐. 안내함.
-  - `App.jsx`의 첫 반환값 이름이 `cards`(실제로는 state 전체) → `cards.cards`로 넘김. 동작은 함.
-  - import 경로 `./reducers/BoardReducer` vs 파일 `boardReducer.js` 대소문자 불일치 — Windows에서만 동작. 안내함.
-- **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리.
+  - 담당자 조건 필터링 미구현 — `'1' === 1` 타입 문제는 미리 안내함.
+  - ~~import 대소문자 불일치~~ — 실제로 Vite가 옛 모듈을 계속 써서 `알 수 없는 액션 filter_changed` 발생. 스택의 파일명(`BoardReducer.js`)과 줄 번호(`:8`, 옛 버전의 throw 위치)로 원인 확인 → 사용자가 수정 (`558e2bd`).
+- **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리. "Part A에서 헤더가 filter를 어떻게 바꾸나" → 콜백·클로저·Vue emit 비유로 설명, 통함. 에러가 나자 짐작 대신 콘솔 원문을 요청했고 사용자가 바로 붙여 줌 — 좋은 흐름.
 - **다음 할 일**: 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
