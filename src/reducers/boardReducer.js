@@ -1,7 +1,7 @@
 export function boardReducer(state, action) {
   switch (action.type) {
     case "card_moved": {
-      return { ...state };
+      return { ...state.cards };
     }
 
     default:

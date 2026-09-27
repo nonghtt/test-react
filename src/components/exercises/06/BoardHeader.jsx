@@ -1,7 +1,7 @@
 // 정적 버전. select의 value·onChange 와 오른쪽 숫자를 연결하는 것이 할 일.
 // <option> 목록은 members 데이터로 map 한다.
 import { members } from "../../../data/members";
-export default function BoardHeader() {
+export default function BoardHeader({setSelectedMember}) {
   const teamMember = members.map((member) => ({
     id: member.id,
     name: member.name,
@@ -13,7 +13,7 @@ export default function BoardHeader() {
         <label className="label" htmlFor="assignee">
           담당자
         </label>
-        <select id="assignee" className="select select-auto" defaultValue="all">
+        <select id="assignee" className="select select-auto" defaultValue="all" onChange={(e) => setSelectedMember(e.target.value)}>
           <option value="all">전체</option>
           {teamMember.map((member) => (
             <option key={member.id} value={member.id}>
