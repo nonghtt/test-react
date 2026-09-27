@@ -4,7 +4,15 @@
 
 - **진행 중인 실습**: **06 Context · useReducer** (2026-09-23 출제, `exercises/06-context-and-reducer.md`). 세 파트(A 드릴링+리듀서 / B Context / C 리렌더 실험), 파트마다 커밋 5개(A-1·A-2·B-1·B-2·C).
 - **06 출제 직후 조정 (2026-09-23)**: 사용자 요청으로 컴포넌트 6개(`Board`·`BoardHeader`·`Column`·`CardList`·`Card`·`CardActions`)를 Claude가 **정적·하드코딩 상태로 미리 나누고 import까지 연결**해 뒀다. `App.jsx`도 `<Board />`로 교체. 사용자는 마크업을 자르지 않고 props·state·리듀서·Context만 붙인다. 이유: "중요한 건 컴포넌트끼리 데이터를 넘기고 선언하는 것" — 앞으로도 트리가 깊은 실습은 이렇게 낸다.
-- **마지막 리뷰 커밋**: `8ec9794` (05 Part B·C, 통과). 06 사용자 커밋은 아직 없음.
+- **마지막 리뷰 커밋**: `8ec9794` (05 Part B·C, 통과). 06 사용자 커밋: `87d4e17`(카드 렌더링·리듀서 뼈대), `8691446`(A-1 진행 중 — useReducer 적용·열별 카드 분류). 둘 다 리뷰 전.
+- **06 Part A-1 진행 상황 (2026-09-27)**: 사용자가 추천 순서 1~5 중 **1단계(열마다 그 열의 카드만)** 진행 중 — `Board`의 `columns.map` 안에서 `status === column.id`로 거르는 것까지 됨. 남은 순서: ② 이동(`card_moved`·`onMove`·`←→ disabled`) ③ 필터(`filter_changed`·제어 select·담당자 조건·헤더 숫자) ④ Card 마무리(펼치기·담당자·「카드 없음」) ⑤ prop 대조표 → A-1 커밋. 두 조건(열·담당자)을 같은 곳에서 거르면 `Column` 개수가 맞는다는 것까지 안내함.
+- **`8691446` 시점에 남아 있는 문제** (Claude가 안내했거나 리뷰 때 짚을 것 — 코드는 고치지 않았음):
+  - `filter` 초기값에 **선택지 목록**(처음엔 열 id 배열, 다음엔 `members` 목록)을 넣음 — "select의 선택지(데이터) vs 지금 골라진 값 하나(state)" 혼동. 두 번 안내했는데 아직 목록. Vue `v-model`에 묶이는 건 선택된 값 하나라는 비유로 설명함.
+  - `Board`에 `useState("all")`(`selectedMember`)을 새로 만들고 `BoardHeader`에 setter를 내림, select는 여전히 `defaultValue` — **리듀서의 `filter`와 같은 정보가 두 곳**(05 `activeTabId` 재발 패턴, 06 리뷰 체크 항목). setter를 내리는 것도 요구 2(`onFilterChange`)와 어긋남. 커밋 직후 "같은 정보가 몇 곳에 있나"를 질문으로만 던짐 → 3단계(필터) 때 답을 확인한다.
+  - `card_moved`가 `{ ...state.cards }` — 배열을 객체에 펼쳐 `cards`·`filter` 키가 사라짐. 안내함.
+  - `App.jsx`의 첫 반환값 이름이 `cards`(실제로는 state 전체) → `cards.cards`로 넘김. 동작은 함.
+  - import 경로 `./reducers/BoardReducer` vs 파일 `boardReducer.js` 대소문자 불일치 — Windows에서만 동작. 안내함.
+- **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리.
 - **다음 할 일**: 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
@@ -16,7 +24,7 @@
   - lint 확인은 05와 같이 **출력 마지막 줄 붙여 넣기**. 없으면 미체크.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05에서 `memo`/`useMemo`를 "Vue는 의존성을 자동 추적하지만 React는 다 실행하고 비교한다"로 대비시킨 설명이 특히 잘 통했다. 06의 Context는 Vue의 provide/inject, `useReducer`는 Pinia/Vuex의 mutation·action에 비유할 수 있다.
 - **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06 실습 파일에 미리 설명해 둔 것: `useReducer`의 동작, 리듀서 순수성, `switch`, `createContext`/`useContext`의 리렌더 규칙 3가지(value 변경 시 소비자 리렌더 · `memo`는 못 막음 · Provider의 `children`은 안 그림), `<select>` value가 문자열이라 `===`가 안 맞는 것, `findIndex`, `git diff --stat`.
-- 갱신: 2026-09-23
+- 갱신: 2026-09-27
 
 세션이 새로 시작되면 이 블록만 보면 됩니다. 실습이 끝날 때마다 Claude가 갱신합니다.
 
