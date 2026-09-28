@@ -1,7 +1,10 @@
 // 정적 버전. select의 value·onChange 와 오른쪽 숫자를 연결하는 것이 할 일.
 // <option> 목록은 members 데이터로 map 한다.
 import { members } from "../../../data/members";
-export default function BoardHeader({ onFilterChange, filter, count }) {
+import { useBoard } from "../../../hooks/useBoard";
+
+export default function BoardHeader({ count }) {
+  const { boards, dispatch } = useBoard();
   const teamMember = members.map((member) => ({
     id: member.id,
     name: member.name,
@@ -17,8 +20,10 @@ export default function BoardHeader({ onFilterChange, filter, count }) {
         <select
           id="assignee"
           className="select select-auto"
-          value={filter}
-          onChange={(e) => onFilterChange(e.target.value)}
+          value={boards.filter}
+          onChange={(e) =>
+            dispatch({ type: "filter_changed", value: e.target.value })
+          }
         >
           <option value="all">전체</option>
           {teamMember.map((member) => (

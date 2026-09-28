@@ -1,28 +1,11 @@
 import CardActions from "./CardActions";
 import { members } from "../../../data/members";
-import { columns } from "../../../data/board";
 import { useState } from "react";
 
-export default function Card({ card, onMove, onDelete }) {
+export default function Card({ card }) {
   const assignee = members.find((member) => member.id === card.assigneeId);
-  const columnIndex = columns.findIndex((c) => c.id === card.status);
-  const isFirst = columnIndex === 0;
-  const isLast = columnIndex === columns.length - 1;
+
   const [isOpen, setIsOpen] = useState(true);
-
-  function moveLeft() {
-    const newStatus = columns[columnIndex - 1].id;
-    onMove(card.id, newStatus);
-  }
-
-  function moveRight() {
-    const newStatus = columns[columnIndex + 1].id;
-    onMove(card.id, newStatus);
-  }
-
-  function deleteCard() {
-    onDelete(card.id);
-  }
 
   return (
     <div className="card stack-sm">
@@ -52,13 +35,7 @@ export default function Card({ card, onMove, onDelete }) {
           <span className="muted text-sm">담당자 없음</span>
         </div>
       )}
-      <CardActions
-        isFirst={isFirst}
-        isLast={isLast}
-        moveLeft={moveLeft}
-        moveRight={moveRight}
-        onDelete={deleteCard}
-      />
+      <CardActions card={card} />
     </div>
   );
 }

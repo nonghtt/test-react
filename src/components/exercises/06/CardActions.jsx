@@ -1,20 +1,28 @@
 // 정적 버전. 첫 열(할 일) 카드의 버튼 줄 — ← 만 disabled.
 //   가운데 열: 둘 다 활성 / 끝 열(완료): → 만 disabled
 //   「담당자 ▸」 버튼은 Part B에서 주석을 푼다.
-export default function CardActions({
-  isFirst,
-  isLast,
-  moveLeft,
-  moveRight,
-  onDelete,
-}) {
+import { columns } from "../../../data/board";
+import { useBoard } from "../../../hooks/useBoard";
+
+export default function CardActions({ card }) {
+  const { dispatch } = useBoard();
+  const columnIndex = columns.findIndex((c) => c.id === card.status);
+  const isFirst = columnIndex === 0;
+  const isLast = columnIndex === columns.length - 1;
+
   return (
     <div className="card-footer">
       <button
         className="btn btn-sm"
         type="button"
         disabled={isFirst}
-        onClick={() => moveLeft()}
+        onClick={() =>
+          dispatch({
+            type: "card_moved",
+            id: card.id,
+            status: columns[columnIndex - 1].id,
+          })
+        }
       >
         ←
       </button>
@@ -22,7 +30,13 @@ export default function CardActions({
         className="btn btn-sm"
         type="button"
         disabled={isLast}
-        onClick={() => moveRight()}
+        onClick={() =>
+          dispatch({
+            type: "card_moved",
+            id: card.id,
+            status: columns[columnIndex + 1].id,
+          })
+        }
       >
         →
       </button>
@@ -30,7 +44,7 @@ export default function CardActions({
       <button
         className="btn btn-sm btn-danger push-right"
         type="button"
-        onClick={onDelete}
+        onClick={() => dispatch({ type: "card_deleted", id: card.id })}
       >
         삭제
       </button>
