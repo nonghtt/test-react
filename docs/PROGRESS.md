@@ -13,8 +13,14 @@
   - `card_moved`가 `{ ...state.cards }` — 배열을 객체에 펼쳐 `cards`·`filter` 키가 사라짐. 안내함.
   - 담당자 조건 필터링 미구현 — `'1' === 1` 타입 문제는 미리 안내함.
   - ~~import 대소문자 불일치~~ — 실제로 Vite가 옛 모듈을 계속 써서 `알 수 없는 액션 filter_changed` 발생. 스택의 파일명(`BoardReducer.js`)과 줄 번호(`:8`, 옛 버전의 throw 위치)로 원인 확인 → 사용자가 수정 (`558e2bd`).
+- **06 Part A-1 중간 리뷰 (2026-09-28, 미커밋 작업 트리 기준) — 미완료**:
+  - 해결됨: `filter` 초기값 `"all"` 문자열 · 담당자 필터(`String(card.assigneeId) === filter`) · `Column` count · `←→ disabled`(`columns.findIndex`로 계산, 하드코딩 없음) · 이동 콜백 연결.
+  - **개념 오해 (최우선)**: `card_moved`가 `find`로 찾은 카드에 `board.status = …` **직접 대입**(state 변경) + `{ ...state, board }`로 **`board` 키 추가**. 화면은 움직여 보이지만 리듀서 순수성·"state 두 키"·"안 바뀐 카드는 같은 객체" 세 조건 위반. 질문으로 돌려줌.
+  - 남은 것: select 제어 컴포넌트(`Board`가 `BoardHeader`에 `filter`를 안 넘김, 여전히 `defaultValue`) · 헤더 `8장` 하드코딩 · Card 펼치기/접기 · 콜백 이름(`handleCardMoved`/`handleFilterChange` vs 요구 `onMove`/`onFilterChange`) · prop 대조표 · lint 경고 2개(`BoardHeader` `filter` 미사용, `App` `members` 미사용) · A-1 커밋.
+  - `src/data/members.js`·`Starter06.jsx`는 포매터 변경뿐(내용 동일). 실험 A의 `git diff --stat`을 흐리지 않게 A-1 커밋 전에 되돌리거나 따로 커밋하라고 안내.
+  - **Claude 쪽 실수**: 이번 세션 앞부분(다른 모델)에서 `moveLeft`/`moveRight` 코드를 통째로 써 줬고 "목적지 status를 넘긴다"는 설계도 사실상 Claude가 정함. 질문 2는 본인 말로 답하게 한다. 이후 세션도 힌트 강도 규칙 재확인.
 - **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리. "Part A에서 헤더가 filter를 어떻게 바꾸나" → 콜백·클로저·Vue emit 비유로 설명, 통함. 에러가 나자 짐작 대신 콘솔 원문을 요청했고 사용자가 바로 붙여 줌 — 좋은 흐름.
-- **다음 할 일**: 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
+- **다음 할 일**: 위 "남은 것"을 사용자가 마무리 → A-1 커밋(`feat(06): Part A-1 - 리듀서 · 트리 · 이동 · 필터`) → prop 대조표 + lint 마지막 줄과 함께 다시 보고. 그다음 실험 A. 최종적으로 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
   - **실험 A·B의 `git diff --stat` 원문**이 붙어 있는지. O/X 개수가 질문 1의 근거.
@@ -25,7 +31,7 @@
   - lint 확인은 05와 같이 **출력 마지막 줄 붙여 넣기**. 없으면 미체크.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05에서 `memo`/`useMemo`를 "Vue는 의존성을 자동 추적하지만 React는 다 실행하고 비교한다"로 대비시킨 설명이 특히 잘 통했다. 06의 Context는 Vue의 provide/inject, `useReducer`는 Pinia/Vuex의 mutation·action에 비유할 수 있다.
 - **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06 실습 파일에 미리 설명해 둔 것: `useReducer`의 동작, 리듀서 순수성, `switch`, `createContext`/`useContext`의 리렌더 규칙 3가지(value 변경 시 소비자 리렌더 · `memo`는 못 막음 · Provider의 `children`은 안 그림), `<select>` value가 문자열이라 `===`가 안 맞는 것, `findIndex`, `git diff --stat`.
-- 갱신: 2026-09-27
+- 갱신: 2026-09-28
 
 세션이 새로 시작되면 이 블록만 보면 됩니다. 실습이 끝날 때마다 Claude가 갱신합니다.
 
@@ -61,6 +67,7 @@
 - 배열 메서드 선택 — `map`(길이 유지·변환) / `filter`(골라내기) / `find`(하나 집기)를 혼동. 삭제에 `map`, 단일 조회에 `filter(...)[0]` (03)
 - 증상에서 원인을 한 칸 빗나가게 추정 — "리렌더링이 안 된다"(실제로는 state에 잘못된 값이 들어감), "탭을 바꿔도 데이터가 안 바뀐다"(실제로는 `filter(...).status`가 `undefined`) (03). 값을 `console.log`로 찍는 습관은 자리 잡았음
 - 이벤트 핸들러 자리에 함수 호출 결과와 함수 참조를 혼동 — `onSearch={load(key)}`(렌더링 중 즉시 실행) vs `onSearch={() => load(key)}`(호출될 때 실행). `load` 안에 동기 `setState`가 있어서 무한 렌더링으로 바로 드러남. 설명 후 원리는 이해함 — "이벤트 자리엔 항상 함수 참조, 인자를 미리 넣어야 하면 화살표로 감싼다"로 정리 (04)
+- 리듀서에서 state를 직접 변경 — `find`로 꺼낸 카드에 `status`를 대입. `find`는 복사본이 아니라 **같은 객체**를 돌려준다는 점과 02의 불변성 규칙이 리듀서로 옮겨 오지 않음 (06)
 - 컴포넌트를 쪼갤 때 자식이 실제로 필요로 하는 값을 빠뜨림 — `BookResult` 분리 후 "다시 시도" 버튼에 `keyword`를 안 넘겨서 빈 검색어로 재요청됨. 원인을 스스로 못 찾고 물어봄 → prop 흐름을 같이 추적해서 원인 확인 (04)
 
 ---
