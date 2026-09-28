@@ -35,6 +35,7 @@
 - **Part C 예측 (2026-09-28, 사용자, 준비 코드 확인 후)**: C-1(펼치기) CardActions **1줄**(클릭한 카드만) · Board **0줄**("Card보다 상위라서"). C-2(담당자 ▸) CardActions **1줄** · Board **1줄** · memo 영향은 "모르겠음". (준비 중 `useRenderCount` default/named import 혼동 → 짝 규칙 설명. 처음 C-2를 "새로 만들어져서 1회"로 써서 N값 vs 줄 수, 리렌더 vs 리마운트 구분 확인 → "줄 수 1줄"로 확정.)
 - **C-1·C-2 결과 (2026-09-28)**: 사용자가 콘솔 안 지우고 펼치기+담당자를 연달아 함 → N값으로 역추적: 조작 후 묶음 1개(CardActions 3회 ×8 · Board 3회) = 담당자. **C-1: CardActions 0줄 · Board 0줄**(예측 1·0), **C-2: CardActions 8줄 · Board 1줄**(예측 1·1). C-1은 단독 재확인 요청. 질문으로 돌려줌: C-1 왜 0(memo + card 참조 동일 + changeAssignee를 옮긴 효과), C-2 왜 memo가 못 막나(규칙 1·2).
 - **C-1 재확인 0줄, 사용자 설명 정확**(memo가 props 비교, card 불변). **C-2 사용자 추론**: "dispatch 참조가 바뀌었다" — 공유·참조 변경 방향은 맞으나 대상이 틀림. useContext는 value 객체 통째로 구독·구조분해는 받은 뒤의 JS 문법·memo는 props 경로만 막음 → API 동작이라 바로 설명함. C-3 예측 요청.
+- **C-3 예측**: CardActions **1줄**(담당자 바뀐 카드만) · Board **1줄**("담당자가 바뀌니 board는 바뀐다").
 - **다음 할 일**: Part C(요구 11~16) — useRenderCount·memo 준비 → C-1·C-2 → Context 분리(useBoardState/useBoardDispatch, useBoard 삭제) → C-3 → 커밋. 관찰 절차 고정(전체 필터·새로고침·콘솔 지우기·한 번 조작·줄 수만). 질문 1은 X=3 근거로 사용자가 작성. 이전 메모: 실험 A 구현 → 커밋 전 `git diff --stat` 원문 + O/X. 최종적으로 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
