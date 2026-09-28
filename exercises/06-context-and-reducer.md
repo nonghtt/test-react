@@ -207,7 +207,7 @@ export function useBoard() {
 - [ ] 드릴링이 없다 — *확인: `Board`·`Column`·`CardList`·`Card`의 `function X({ … })` 줄에 `filter`·`onMove`·`onDelete`·`onFilterChange`·`state`·`dispatch`가 없다*
 - [ ] 같은 정보가 두 곳에 없다 — *확인: `src/components/exercises/06/` 전체에서 `useState`를 검색하면 `Card.jsx`의 펼침 한 줄뿐이다 (펼침을 리듀서에 뒀다면 0줄). `BoardHeader`·`Column`·`CardList`에 `useState`가 있으면 Context에 있는 값을 복사한 것이다*
 - [ ] Provider 밖에서 부르면 여러분이 쓴 에러 메시지가 뜬다 — *확인: 요구 8의 메시지가 보고에 있다*
-- [ ] 「전체」 필터에서 「담당자 ▸」 한 번 → `[render] CardActions` 1줄 또는 0줄(8줄 아님), `[render] Board` 0줄 — *확인: Part C 관찰 절차 그대로*
+- [ ] 「전체」 필터에서 「담당자 ▸」 한 번 → `[render] CardActions` 1줄 또는 0줄(8줄 아님). `[render] Board`는 `Board`가 상태 통을 읽지 않으면 0줄, 읽으면(필터링·개수를 `Board`에서 계산) 1줄 — 1줄이면 이유를 질문 5에 씁니다 — *확인: Part C 관찰 절차 그대로*
 - [ ] `CardActions`는 `useBoardDispatch()`만 부른다 — *확인: `CardActions.jsx`에 `useBoardState`가 없다*
 - [ ] 스타터에 없는 태그·className·CSS를 새로 만들지 않았고, `ui/`는 수정하지 않았다 — *확인: `git diff --stat <06 출제 커밋>..HEAD`에 `src/styles/`·`src/components/ui/`가 없다 (출제 커밋 해시는 `git log --oneline`에서 `docs: 06 …` 줄)*
 - [ ] `npm run lint` 경고 없음, 콘솔에 React 경고·에러 없음 — *확인: **`npm run lint`를 직접 실행하고 출력의 마지막 줄을 완료 보고에 그대로 붙여 넣으세요.** 05에서 이 방법으로 처음 0개를 만들었습니다. 붙여 넣은 줄이 없으면 이 항목은 체크되지 않은 것으로 봅니다*
