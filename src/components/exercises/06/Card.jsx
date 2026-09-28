@@ -4,7 +4,6 @@ import { useState } from "react";
 
 export default function Card({ card }) {
   const assignee = members.find((member) => member.id === card.assigneeId);
-
   const [isOpen, setIsOpen] = useState(true);
 
   return (

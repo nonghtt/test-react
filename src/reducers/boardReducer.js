@@ -16,6 +16,17 @@ export function boardReducer(state, action) {
       };
     }
 
+    case "assignee_changed": {
+      return {
+        ...state,
+        cards: state.cards.map((card) =>
+          card.id === action.id
+            ? { ...card, assigneeId: action.assigneeId }
+            : card,
+        ),
+      };
+    }
+
     case "filter_changed": {
       return { ...state, filter: action.value };
     }

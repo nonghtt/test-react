@@ -1,7 +1,7 @@
 // 정적 버전. 첫 열(할 일) 카드의 버튼 줄 — ← 만 disabled.
 //   가운데 열: 둘 다 활성 / 끝 열(완료): → 만 disabled
 //   「담당자 ▸」 버튼은 Part B에서 주석을 푼다.
-import { columns } from "../../../data/board";
+import { members, columns } from "../../../data/board";
 import { useBoard } from "../../../hooks/useBoard";
 
 export default function CardActions({ card }) {
@@ -9,6 +9,18 @@ export default function CardActions({ card }) {
   const columnIndex = columns.findIndex((c) => c.id === card.status);
   const isFirst = columnIndex === 0;
   const isLast = columnIndex === columns.length - 1;
+
+  function changeAssignee(id) {
+    const currentAssigneeIndex = members.findIndex(
+      (member) => member.id === card.assigneeId,
+    );
+    if (currentAssigneeIndex === members.length - 1) {
+      dispatch({ type: "assignee_changed", id, assigneeId: null });
+    } else {
+      const newAssignee = members[currentAssigneeIndex + 1];
+      dispatch({ type: "assignee_changed", id, assigneeId: newAssignee.id });
+    }
+  }
 
   return (
     <div className="card-footer">
@@ -40,7 +52,13 @@ export default function CardActions({ card }) {
       >
         →
       </button>
-      {/* <button className="btn btn-sm btn-ghost" type="button">담당자 ▸</button> */}
+      <button
+        className="btn btn-sm btn-ghost"
+        type="button"
+        onClick={() => changeAssignee(card.id)}
+      >
+        담당자 ▸
+      </button>
       <button
         className="btn btn-sm btn-danger push-right"
         type="button"
