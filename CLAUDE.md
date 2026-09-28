@@ -30,7 +30,7 @@
 ## 워크플로
 
 1. Claude가 `exercises/NN-이름.md`와 `src/starters/StarterNN.jsx` 작성 → `docs/ROADMAP.md` 단계 상태를 🟡로 → 커밋.
-2. 사용자가 `src/`에서 구현하고 커밋 (커밋은 사용자가 직접 해도 되고 Claude에게 시켜도 됨).
+2. 사용자가 `src/`에서 구현. **작업(단계·파트)이 끝나면 Claude가 커밋·푸시한다** (2026-09-28 결정). 실습 파일의 커밋 메시지를 쓰고, `git diff --stat`을 재는 실험은 stat·O/X를 받은 **뒤에** 커밋한다.
 3. 사용자가 "NN 완료" 라고 하면 Claude는 `git diff <이전 실습 커밋>..HEAD` 로 변경분만 리뷰.
 4. 리뷰 후 `docs/PROGRESS.md`에 기록, 통과하면 `docs/ROADMAP.md`의 개념 상태를 갱신하고 커밋.
 5. 보완이 필요하면 사용자가 수정 → 다시 "NN 완료".
