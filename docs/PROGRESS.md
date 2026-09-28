@@ -25,7 +25,8 @@
 - **06 Part A-1 통과 (2026-09-28, `38e608f`)**: lint "Found 0 warnings and 0 errors." 사용자가 붙여 넣음. prop 대조표는 사용자 요청으로 **Claude가 대조** — 6쌍 전부 일치. (대조표는 prop 이름 불일치 약점을 겨냥한 장치였으므로, 이번엔 사용자가 직접 하지 않았다는 점만 기록. 실험 A·B의 O/X는 사용자가 직접 해야 결과가 의미 있음.)
 - **실험 A 예측 (2026-09-28, 사용자)**: "6개 파일 — App부터 CardActions까지 prop으로 내려야 하니까". O/X 예측: App(dispatch 처리)·Card(id를 넣는 곳)만 O, 나머지 X. 실제 `git diff --stat`과 비교할 것.
 - **실험 A 결과 (2026-09-28, 미커밋)**: `git diff --stat` 7 files (App·Board·Card·CardActions·CardList·Column·boardReducer). 예측 6 → 리듀서 파일 누락. X = Board·Column·CardList **3개**. 사용자 요청으로 O/X는 Claude가 채움. 삭제 자체는 미동작 — 리듀서가 `{ ...state }`만 반환 + `console.log`(StrictMode 이중 실행으로 두 번 찍힘 → 순수성 설명함) + 이름 `card_delete`(요구는 `card_deleted`). 삭제엔 `filter`라고 규칙 바로 알려 줌.
-- **다음 할 일**: 사용자가 `card_deleted` 리듀서 수정 → Part A-2 커밋 → Part B. 이전 메모: 실험 A 구현 → 커밋 전 `git diff --stat` 원문 + O/X. 최종적으로 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
+- **A-2 리듀서 통과 (2026-09-28)**: `card_deleted`가 `filter((card) => card.id !== action.id)` — 순수·두 키 OK. (`map` 복사 → `filter`+옛 콜백(객체는 항상 truthy라 아무것도 안 지워짐) → 정답, 3번 만에. truthy 규칙 설명함.) 미커밋.
+- **다음 할 일**: 사용자가 브라우저 확인 후 `feat(06): Part A-2 - 삭제 (실험 A)` 커밋 → Part B(요구 6~10). 질문 1은 X=3 근거로 사용자가 작성. 이전 메모: 실험 A 구현 → 커밋 전 `git diff --stat` 원문 + O/X. 최종적으로 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
   - **실험 A·B의 `git diff --stat` 원문**이 붙어 있는지. O/X 개수가 질문 1의 근거.
