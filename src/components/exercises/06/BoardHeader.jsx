@@ -1,10 +1,12 @@
 // 정적 버전. select의 value·onChange 와 오른쪽 숫자를 연결하는 것이 할 일.
 // <option> 목록은 members 데이터로 map 한다.
 import { members } from "../../../data/members";
-import { useBoard } from "../../../hooks/useBoard";
+import { useBoardState } from "../../../hooks/useBoardState";
+import { useBoardDispatch } from "../../../hooks/useBoardDispatch";
 
 export default function BoardHeader({ count }) {
-  const { boards, dispatch } = useBoard();
+  const boards = useBoardState();
+  const dispatch = useBoardDispatch();
   const teamMember = members.map((member) => ({
     id: member.id,
     name: member.name,

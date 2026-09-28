@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { boardReducer } from "../reducers/boardReducer";
 import { initialCards } from "../data/board";
-import { BoardContext } from "./BoardContext";
+import { BoardStateContext, BoardDispatchContext } from "./BoardContext";
 
 export default function BoardProvider({ children }) {
   const [boards, dispatch] = useReducer(boardReducer, {
@@ -9,5 +9,9 @@ export default function BoardProvider({ children }) {
     filter: "all",
   });
 
-  return <BoardContext value={{ boards, dispatch }}>{children}</BoardContext>;
+  return (
+    <BoardStateContext value={boards}>
+      <BoardDispatchContext value={dispatch}>{children}</BoardDispatchContext>
+    </BoardStateContext>
+  );
 }

@@ -2,13 +2,16 @@
 //   가운데 열: 둘 다 활성 / 끝 열(완료): → 만 disabled
 //   「담당자 ▸」 버튼은 Part B에서 주석을 푼다.
 import { members, columns } from "../../../data/board";
-import { useBoard } from "../../../hooks/useBoard";
+import { useBoardDispatch } from "../../../hooks/useBoardDispatch";
+import { useRenderCount } from "../../../hooks/useRenderCount";
+import { memo } from "react";
 
-export default function CardActions({ card }) {
-  const { dispatch } = useBoard();
+function CardActions({ card }) {
+  const dispatch = useBoardDispatch();
   const columnIndex = columns.findIndex((c) => c.id === card.status);
   const isFirst = columnIndex === 0;
   const isLast = columnIndex === columns.length - 1;
+  useRenderCount("CardActions");
 
   function changeAssignee(id) {
     const currentAssigneeIndex = members.findIndex(
@@ -69,3 +72,5 @@ export default function CardActions({ card }) {
     </div>
   );
 }
+
+export default memo(CardActions);

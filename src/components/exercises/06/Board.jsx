@@ -1,13 +1,15 @@
 import BoardHeader from "./BoardHeader";
 import Column from "./Column";
 import { columns } from "../../../data/board";
-import { useBoard } from "../../../hooks/useBoard";
+import { useBoardState } from "../../../hooks/useBoardState";
+import { useRenderCount } from "../../../hooks/useRenderCount";
 
 export default function Board() {
-  const { boards } = useBoard();
+  const boards = useBoardState();
   const cards = boards.cards;
   const filter = boards.filter;
   const isAllType = filter === "all";
+  useRenderCount("Board");
 
   const selectedBoardCount = isAllType
     ? cards.length
