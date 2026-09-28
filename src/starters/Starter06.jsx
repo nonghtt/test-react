@@ -23,8 +23,14 @@ export default function Starter06() {
       <header className="row row-between">
         <h1>팀 보드</h1>
         <div className="row">
-          <label className="label" htmlFor="assignee">담당자</label>
-          <select id="assignee" className="select select-auto" defaultValue="all">
+          <label className="label" htmlFor="assignee">
+            담당자
+          </label>
+          <select
+            id="assignee"
+            className="select select-auto"
+            defaultValue="all"
+          >
             <option value="all">전체</option>
             <option value="1">김하늘</option>
             <option value="2">이준서</option>
@@ -48,18 +54,37 @@ export default function Starter06() {
           <div className="card stack-sm">
             <div className="row row-between">
               <div className="card-title">로그인 페이지 리뉴얼</div>
-              <button className="btn btn-sm btn-ghost" type="button">접기</button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                접기
+              </button>
             </div>
-            <p className="card-desc">소셜 로그인 버튼 추가, 비밀번호 찾기 흐름 정리</p>
+            <p className="card-desc">
+              소셜 로그인 버튼 추가, 비밀번호 찾기 흐름 정리
+            </p>
             <div className="row">
-              <img className="avatar avatar-sm" src="https://i.pravatar.cc/80?img=1" alt="김하늘" />
+              <img
+                className="avatar avatar-sm"
+                src="https://i.pravatar.cc/80?img=1"
+                alt="김하늘"
+              />
               <span className="muted text-sm">김하늘</span>
             </div>
             <div className="card-footer">
-              <button className="btn btn-sm" type="button" disabled>←</button>
-              <button className="btn btn-sm" type="button">→</button>
-              <button className="btn btn-sm btn-ghost" type="button">담당자 ▸</button>
-              <button className="btn btn-sm btn-danger push-right" type="button">삭제</button>
+              <button className="btn btn-sm" type="button" disabled>
+                ←
+              </button>
+              <button className="btn btn-sm" type="button">
+                →
+              </button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                담당자 ▸
+              </button>
+              <button
+                className="btn btn-sm btn-danger push-right"
+                type="button"
+              >
+                삭제
+              </button>
             </div>
           </div>
 
@@ -67,17 +92,34 @@ export default function Starter06() {
           <div className="card stack-sm">
             <div className="row row-between">
               <div className="card-title">결제 API 타임아웃 조사</div>
-              <button className="btn btn-sm btn-ghost" type="button">펼치기</button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                펼치기
+              </button>
             </div>
             <div className="row">
-              <img className="avatar avatar-sm" src="https://i.pravatar.cc/80?img=12" alt="이준서" />
+              <img
+                className="avatar avatar-sm"
+                src="https://i.pravatar.cc/80?img=12"
+                alt="이준서"
+              />
               <span className="muted text-sm">이준서</span>
             </div>
             <div className="card-footer">
-              <button className="btn btn-sm" type="button" disabled>←</button>
-              <button className="btn btn-sm" type="button">→</button>
-              <button className="btn btn-sm btn-ghost" type="button">담당자 ▸</button>
-              <button className="btn btn-sm btn-danger push-right" type="button">삭제</button>
+              <button className="btn btn-sm" type="button" disabled>
+                ←
+              </button>
+              <button className="btn btn-sm" type="button">
+                →
+              </button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                담당자 ▸
+              </button>
+              <button
+                className="btn btn-sm btn-danger push-right"
+                type="button"
+              >
+                삭제
+              </button>
             </div>
           </div>
 
@@ -85,16 +127,29 @@ export default function Starter06() {
           <div className="card stack-sm">
             <div className="row row-between">
               <div className="card-title">온보딩 일러스트 시안</div>
-              <button className="btn btn-sm btn-ghost" type="button">펼치기</button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                펼치기
+              </button>
             </div>
             <div className="row">
               <span className="muted text-sm">담당자 없음</span>
             </div>
             <div className="card-footer">
-              <button className="btn btn-sm" type="button" disabled>←</button>
-              <button className="btn btn-sm" type="button">→</button>
-              <button className="btn btn-sm btn-ghost" type="button">담당자 ▸</button>
-              <button className="btn btn-sm btn-danger push-right" type="button">삭제</button>
+              <button className="btn btn-sm" type="button" disabled>
+                ←
+              </button>
+              <button className="btn btn-sm" type="button">
+                →
+              </button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                담당자 ▸
+              </button>
+              <button
+                className="btn btn-sm btn-danger push-right"
+                type="button"
+              >
+                삭제
+              </button>
             </div>
           </div>
         </section>
@@ -108,17 +163,34 @@ export default function Starter06() {
           <div className="card stack-sm">
             <div className="row row-between">
               <div className="card-title">검색 디바운스 적용</div>
-              <button className="btn btn-sm btn-ghost" type="button">펼치기</button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                펼치기
+              </button>
             </div>
             <div className="row">
-              <img className="avatar avatar-sm" src="https://i.pravatar.cc/80?img=1" alt="김하늘" />
+              <img
+                className="avatar avatar-sm"
+                src="https://i.pravatar.cc/80?img=1"
+                alt="김하늘"
+              />
               <span className="muted text-sm">김하늘</span>
             </div>
             <div className="card-footer">
-              <button className="btn btn-sm" type="button">←</button>
-              <button className="btn btn-sm" type="button">→</button>
-              <button className="btn btn-sm btn-ghost" type="button">담당자 ▸</button>
-              <button className="btn btn-sm btn-danger push-right" type="button">삭제</button>
+              <button className="btn btn-sm" type="button">
+                ←
+              </button>
+              <button className="btn btn-sm" type="button">
+                →
+              </button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                담당자 ▸
+              </button>
+              <button
+                className="btn btn-sm btn-danger push-right"
+                type="button"
+              >
+                삭제
+              </button>
             </div>
           </div>
         </section>
@@ -132,17 +204,34 @@ export default function Starter06() {
           <div className="card stack-sm">
             <div className="row row-between">
               <div className="card-title">디자인 토큰 정리</div>
-              <button className="btn btn-sm btn-ghost" type="button">펼치기</button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                펼치기
+              </button>
             </div>
             <div className="row">
-              <img className="avatar avatar-sm" src="https://i.pravatar.cc/80?img=5" alt="박서연" />
+              <img
+                className="avatar avatar-sm"
+                src="https://i.pravatar.cc/80?img=5"
+                alt="박서연"
+              />
               <span className="muted text-sm">박서연</span>
             </div>
             <div className="card-footer">
-              <button className="btn btn-sm" type="button">←</button>
-              <button className="btn btn-sm" type="button" disabled>→</button>
-              <button className="btn btn-sm btn-ghost" type="button">담당자 ▸</button>
-              <button className="btn btn-sm btn-danger push-right" type="button">삭제</button>
+              <button className="btn btn-sm" type="button">
+                ←
+              </button>
+              <button className="btn btn-sm" type="button" disabled>
+                →
+              </button>
+              <button className="btn btn-sm btn-ghost" type="button">
+                담당자 ▸
+              </button>
+              <button
+                className="btn btn-sm btn-danger push-right"
+                type="button"
+              >
+                삭제
+              </button>
             </div>
           </div>
 
@@ -151,5 +240,5 @@ export default function Starter06() {
         </section>
       </div>
     </div>
-  )
+  );
 }
