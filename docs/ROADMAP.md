@@ -18,7 +18,7 @@
 | 3 | 상태 끌어올리기 · Todo 앱 | `exercises/03-lifting-state-up.md` | ✅ |
 | 4 | useEffect · 데이터 페칭 | `exercises/04-effects-and-fetching.md` | ✅ |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-custom-hooks-refs-rendering.md` | ✅ |
-| 6 | Context · useReducer | `exercises/06-context-and-reducer.md` | 🟡 |
+| 6 | Context · useReducer | `exercises/06-context-and-reducer.md` | ✅ |
 | 7 | 라우팅 | `exercises/07-*.md` | ⬜ |
 | 8 | 종합 미니 프로젝트 | `exercises/08-*.md` | ⬜ |
 | + | React 19 신기능 (선택) | `exercises/09-*.md` | ⬜ |
@@ -90,11 +90,11 @@
 
 | 개념 | 상태 | 비고 |
 |---|---|---|
-| `createContext` / `useContext` | ⬜ | |
-| Provider 패턴과 Context 분리 | ⬜ | |
-| `useReducer` 와 액션 설계 | ⬜ | |
-| Context + Reducer 조합 | ⬜ | |
-| prop drilling vs Context 판단 | ⬜ | |
+| `createContext` / `useContext` | ✅ | 06. 통(이름표)·넣는 쪽·꺼내는 쪽 역할 구분, Provider 밖 감지 훅(`useBoard`). `useContext`에 훅을 넣거나 키 이름을 어긋나게 꺼내는 실수를 거쳐 정리. "가장 가까운 위쪽 Provider를 읽는다" |
+| Provider 패턴과 Context 분리 | ✅ | 06. 상태 통/dispatch 통 분리, `value`를 객체로 묶지 않는 이유(렌더마다 새 객체). **Provider 태그 vs Provider 컴포넌트** 혼동을 한 번 거침. 실험 C-2 8줄 → C-3 1줄로 확인 |
+| `useReducer` 와 액션 설계 | ✅ | 06. 과거형 사건 이름, 순수 리듀서(state 직접 변경 1회 → 수정), 참조 보존(`map` + 바뀐 것만 스프레드). 액션에 목적지를 담아 버튼이 `columns`를 알게 됨 — 방향이 나았음을 스스로 인정. StrictMode 이중 실행으로 리듀서 안 `console.log` 두 번 |
+| Context + Reducer 조합 | ✅ | 06. `useReducer`를 Provider로 이사, 필요한 컴포넌트가 직접 꺼냄. 컴포넌트 안 콜백은 렌더마다 새 함수·`dispatch`는 안정 — Vue `setup` 1회 실행과 대비해 이해 |
+| prop drilling vs Context 판단 | ✅ | 06. 실험 A(props) 7 files·X 3 vs B(Context) 2 files·X 0. "Context는 드릴링↓, 리렌더 범위↑". 정적 데이터는 import·부모만 아는 값은 props·공유되고 바뀌는 값은 Context. 로컬(펼침) vs 전역 기준. `useMemo`로 value 안정화(질문 4)는 미답 |
 
 ### 7. 라우팅
 

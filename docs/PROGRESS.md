@@ -2,51 +2,10 @@
 
 ## 현재 상태
 
-- **진행 중인 실습**: **06 Context · useReducer** (2026-09-23 출제, `exercises/06-context-and-reducer.md`). 세 파트(A 드릴링+리듀서 / B Context / C 리렌더 실험), 파트마다 커밋 5개(A-1·A-2·B-1·B-2·C).
-- **06 출제 직후 조정 (2026-09-23)**: 사용자 요청으로 컴포넌트 6개(`Board`·`BoardHeader`·`Column`·`CardList`·`Card`·`CardActions`)를 Claude가 **정적·하드코딩 상태로 미리 나누고 import까지 연결**해 뒀다. `App.jsx`도 `<Board />`로 교체. 사용자는 마크업을 자르지 않고 props·state·리듀서·Context만 붙인다. 이유: "중요한 건 컴포넌트끼리 데이터를 넘기고 선언하는 것" — 앞으로도 트리가 깊은 실습은 이렇게 낸다.
-- **마지막 리뷰 커밋**: `8ec9794` (05 Part B·C, 통과). 06 사용자 커밋: `87d4e17`(카드 렌더링·리듀서 뼈대), `8691446`(useReducer 적용·열별 카드 분류), `558e2bd`(filter_changed·필터 콜백 연결·import 대소문자 수정). 전부 리뷰 전.
-- **06 Part A-1 진행 상황 (2026-09-27, `558e2bd` 기준)**: 추천 순서 ① 열별 카드 분류 + `Column` count — **완료**. ③ 필터 — **절반**: `Board`의 `useState` 제거(단일 진실 공급원 이해함), `App`의 `handleFilterChange` → `Board` → `BoardHeader` `onChange`로 연결, 리듀서 `filter_changed` case 추가. 남은 순서: ③ 나머지(filter 초기값·제어 select·담당자 조건·헤더 숫자) ② 이동(`card_moved`·`onMove`·`←→ disabled`) ④ Card 마무리(펼치기·담당자·「카드 없음」) ⑤ prop 대조표 → A-1 커밋.
-- **`558e2bd` 시점에 남아 있는 문제** (안내했거나 리뷰 때 짚을 것 — 코드는 Claude가 고치지 않았음):
-  - `filter` 초기값에 **선택지 목록**(처음엔 열 id 배열, 지금은 `{id:"all"} + members` 목록) — "select의 선택지(데이터) vs 지금 골라진 값 하나(state)" 혼동. **세 번** 안내(`filter: "all"`까지 직접 알려 줌)했는데 아직 목록. 약점 목록 후보.
-  - select가 아직 `defaultValue="all"` — `filter` prop을 받기만 하고 `value`에 안 붙임(lint `no-unused-vars` 경고로 드러남). 제어 컴포넌트 설명은 함.
-  - 콜백 prop 이름이 `handleFilterChange` — 요구 2·7은 `onFilterChange`. 동작엔 문제 없음, prop 대조표 단계에서 확인.
-  - `card_moved`가 `{ ...state.cards }` — 배열을 객체에 펼쳐 `cards`·`filter` 키가 사라짐. 안내함.
-  - 담당자 조건 필터링 미구현 — `'1' === 1` 타입 문제는 미리 안내함.
-  - ~~import 대소문자 불일치~~ — 실제로 Vite가 옛 모듈을 계속 써서 `알 수 없는 액션 filter_changed` 발생. 스택의 파일명(`BoardReducer.js`)과 줄 번호(`:8`, 옛 버전의 throw 위치)로 원인 확인 → 사용자가 수정 (`558e2bd`).
-- **06 Part A-1 중간 리뷰 (2026-09-28, 미커밋 작업 트리 기준) — 미완료**:
-  - 해결됨: `filter` 초기값 `"all"` 문자열 · 담당자 필터(`String(card.assigneeId) === filter`) · `Column` count · `←→ disabled`(`columns.findIndex`로 계산, 하드코딩 없음) · 이동 콜백 연결.
-  - **개념 오해 (최우선)**: `card_moved`가 `find`로 찾은 카드에 `board.status = …` **직접 대입**(state 변경) + `{ ...state, board }`로 **`board` 키 추가**. 화면은 움직여 보이지만 리듀서 순수성·"state 두 키"·"안 바뀐 카드는 같은 객체" 세 조건 위반. 질문으로 돌려줌.
-  - 남은 것: select 제어 컴포넌트(`Board`가 `BoardHeader`에 `filter`를 안 넘김, 여전히 `defaultValue`) · 헤더 `8장` 하드코딩 · Card 펼치기/접기 · 콜백 이름(`handleCardMoved`/`handleFilterChange` vs 요구 `onMove`/`onFilterChange`) · prop 대조표 · lint 경고 2개(`BoardHeader` `filter` 미사용, `App` `members` 미사용) · A-1 커밋.
-  - `src/data/members.js`·`Starter06.jsx`는 포매터 변경뿐(내용 동일). 실험 A의 `git diff --stat`을 흐리지 않게 A-1 커밋 전에 되돌리거나 따로 커밋하라고 안내.
-  - **Claude 쪽 실수**: 이번 세션 앞부분(다른 모델)에서 `moveLeft`/`moveRight` 코드를 통째로 써 줬고 "목적지 status를 넘긴다"는 설계도 사실상 Claude가 정함. 질문 2는 본인 말로 답하게 한다. 이후 세션도 힌트 강도 규칙 재확인.
-- **06 Part A-1 재검토 (2026-09-28, 미커밋)**: 리듀서 `card_moved`가 `map` + 해당 카드만 스프레드로 고쳐짐(순수·두 키·참조 보존 모두 OK). select 제어 컴포넌트 · 콜백 이름 `onMove`/`onFilterChange` · 펼치기/접기(`Card` 로컬 `useState`) · lint 0 해결. **남은 것**: 헤더 숫자가 `teamMember.length`(팀원 5명)라 보이는 카드 수가 아님 — 질문으로 돌려줌 · prop 대조표 · 포매터만 바뀐 `members.js`/`Starter06.jsx` 정리 · A-1 커밋.
-- **06 Part A-1 3차 검토 (2026-09-28, 미커밋)**: 헤더 숫자를 `Board`가 렌더 중에 계산(`selectedBoardCount`)해서 `count` prop으로 내림 — state에 안 넣음, OK. **A-1 코드 요구사항 전부 충족.** 제출물만 남음: 포매터 변경(`members.js`/`Starter06.jsx`) 정리 → A-1 커밋 → prop 대조표 + lint 마지막 줄 보고.
-- **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리. "Part A에서 헤더가 filter를 어떻게 바꾸나" → 콜백·클로저·Vue emit 비유로 설명, 통함. 에러가 나자 짐작 대신 콘솔 원문을 요청했고 사용자가 바로 붙여 줌 — 좋은 흐름.
-- **06 Part A-1 통과 (2026-09-28, `38e608f`)**: lint "Found 0 warnings and 0 errors." 사용자가 붙여 넣음. prop 대조표는 사용자 요청으로 **Claude가 대조** — 6쌍 전부 일치. (대조표는 prop 이름 불일치 약점을 겨냥한 장치였으므로, 이번엔 사용자가 직접 하지 않았다는 점만 기록. 실험 A·B의 O/X는 사용자가 직접 해야 결과가 의미 있음.)
-- **실험 A 예측 (2026-09-28, 사용자)**: "6개 파일 — App부터 CardActions까지 prop으로 내려야 하니까". O/X 예측: App(dispatch 처리)·Card(id를 넣는 곳)만 O, 나머지 X. 실제 `git diff --stat`과 비교할 것.
-- **실험 A 결과 (2026-09-28, 미커밋)**: `git diff --stat` 7 files (App·Board·Card·CardActions·CardList·Column·boardReducer). 예측 6 → 리듀서 파일 누락. X = Board·Column·CardList **3개**. 사용자 요청으로 O/X는 Claude가 채움. 삭제 자체는 미동작 — 리듀서가 `{ ...state }`만 반환 + `console.log`(StrictMode 이중 실행으로 두 번 찍힘 → 순수성 설명함) + 이름 `card_delete`(요구는 `card_deleted`). 삭제엔 `filter`라고 규칙 바로 알려 줌.
-- **A-2 리듀서 통과 (2026-09-28)**: `card_deleted`가 `filter((card) => card.id !== action.id)` — 순수·두 키 OK. (`map` 복사 → `filter`+옛 콜백(객체는 항상 truthy라 아무것도 안 지워짐) → 정답, 3번 만에. truthy 규칙 설명함.) 미커밋.
-- **Part A 커밋 완료**: A-1 `38e608f`, A-2 `20b7716`.
-- **Part B-1 진행 (2026-09-28, 미커밋)**: 사용자 요청으로 Context를 예제(다크모드 ThemeContext)로 단계별 안내(1 통 → 2 Provider → 3 useContext·useBoard → 4 BoardHeader → 5 CardActions). 요구 6·7 충족 확인 — 드릴링 0, CardActions가 dispatch 직접, value `{ boards, dispatch }`. 중간에 막힌 곳: `useContext(useBoard)`(훅을 Context 자리에), Context 키 이름 불일치(`board`/`boards`, 최상위 `filter`), `const` 선언 전 사용(TDZ), prop 이름 `filteredCards`/`cards`(**prop 이름 불일치 4회째**), Provider 안 콜백을 value에 넣음 → "컴포넌트 함수는 렌더마다 재실행, dispatch만 안정" 설명(Vue setup 1회 대비). card_moved는 목적지 status 유지(CardActions가 columns를 앎) — 질문 2 재료. 리듀서에 `console.log` 남아 있음(지적함).
-- **요구 8 결과**: "Uncaught Error: useBoard는 BoardContext 안에서만 사용할 수 있다." (본인 메시지 확인).
-- **B-1 커밋**: `1e5b996`.
-- **실험 B 예측 (2026-09-28, 사용자)**: 리듀서가 다음 담당자 계산. "CardActions.jsx와 boardReducer.js 2개만, 나머지 jsx는 영향 없음". O/X 예측은 둘 다 O로 읽힘. → **수정 예측**: Card.jsx도 바뀐다("members를 갖고 있으니") → 3개.
-- **실험 B 결과 (B-2 `74c40d3`)**: stat 3 files — CardActions(O: 다음 담당자 계산 + dispatch) · boardReducer(O: `assignee_changed`) · Card(빈 줄 1개 삭제뿐, 기능 변경 없음 → O/X 대상 아님). **실질 2개, X 0개** (A: 7개·X 3개). 처음 예측(2개)이 실질과 일치. 설계: 예측은 "리듀서가 계산"이었으나 최종은 **CardActions가 계산**(리듀서에 data import를 피하려고 — 완성 조건상 board.js import는 허용이라 알려 줌, 질문 2 재료). 과정: 순환에 "없음" 누락 → 수정, Card가 dispatch하고 `changeAssignee`를 prop으로 내림 → 렌더마다 새 함수라 memo 무력화 설명("비효율"이 아니라 `===`가 달라지는 것) → CardActions로 이동, `members`를 prop으로 받음 → "import 가능한 정적 데이터는 직접 import, 부모만 아는 값만 props" 정리 → 직접 import.
-- **Part C 예측 (2026-09-28, 사용자, 준비 코드 확인 후)**: C-1(펼치기) CardActions **1줄**(클릭한 카드만) · Board **0줄**("Card보다 상위라서"). C-2(담당자 ▸) CardActions **1줄** · Board **1줄** · memo 영향은 "모르겠음". (준비 중 `useRenderCount` default/named import 혼동 → 짝 규칙 설명. 처음 C-2를 "새로 만들어져서 1회"로 써서 N값 vs 줄 수, 리렌더 vs 리마운트 구분 확인 → "줄 수 1줄"로 확정.)
-- **C-1·C-2 결과 (2026-09-28)**: 사용자가 콘솔 안 지우고 펼치기+담당자를 연달아 함 → N값으로 역추적: 조작 후 묶음 1개(CardActions 3회 ×8 · Board 3회) = 담당자. **C-1: CardActions 0줄 · Board 0줄**(예측 1·0), **C-2: CardActions 8줄 · Board 1줄**(예측 1·1). C-1은 단독 재확인 요청. 질문으로 돌려줌: C-1 왜 0(memo + card 참조 동일 + changeAssignee를 옮긴 효과), C-2 왜 memo가 못 막나(규칙 1·2).
-- **C-1 재확인 0줄, 사용자 설명 정확**(memo가 props 비교, card 불변). **C-2 사용자 추론**: "dispatch 참조가 바뀌었다" — 공유·참조 변경 방향은 맞으나 대상이 틀림. useContext는 value 객체 통째로 구독·구조분해는 받은 뒤의 JS 문법·memo는 props 경로만 막음 → API 동작이라 바로 설명함. C-3 예측 요청.
-- **C-3 예측**: CardActions **1줄**(담당자 바뀐 카드만) · Board **1줄**("담당자가 바뀌니 board는 바뀐다").
-- **C-3 결과 (Part C 커밋 a54a990)**: CardActions **1줄** · Board **1줄** — 예측과 일치. CardActions 1줄 = dispatch 통 불변 + memo + 리듀서 참조 보존(바뀐 카드만 새 객체). **Board 1줄은 이 설계에서 정상**: Board가 필터링·개수 계산 때문에 useBoardState를 읽음. 실습 파일 완성 조건 "Board 0줄"은 Board가 state를 안 읽는 전제였는데 요구사항에 안 적음(출제 실수) → "1줄 이유를 설명하면 통과"로 조정. 분리 중 막힌 곳: Provider(통 태그) vs Provider 컴포넌트 혼동 → 두 번째 Provider 컴포넌트를 만들고 useReducer를 또 부름, `const [dispatch] = useReducer` 배열 구조분해 순서, value 객체 래핑과 꺼내는 쪽 불일치.
-- **06 질문 1차 답변 (2026-09-28)**: 1 "멀리 떨어져 있으면 고려 + 리렌더 비용" — 기준 OK, Context는 드릴링↓·리렌더 범위↑임을 보충. 2 무엇만 있고 이유 없음 → 이유 요청. 3 "질문을 더 명확하게" → 3-1(펼침을 useState에 둔 이유·C-1 연결)·3-2(전역/로컬 기준 한 줄)·3-3(card_deleted가 filter를 all로 되돌리는 가정 + BoardHeader 로컬 useState → select 표시 vs 목록)로 다시 씀. 4 **미답** — 사용자가 "나중에 코드 검토로 이해하겠다, 신경 쓰지 마라"(재촉하지 말 것). 5 memo 부분 정확, 나머지 세 항목 요청.
-- **다음 할 일**: 2·3·5 보충 답변 받기. 받으면 PROGRESS 실습 기록 작성 + ROADMAP 06 ✅ 및 개념 체크.
-- **06 리뷰 때 볼 것**:
-  - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
-  - **실험 A·B의 `git diff --stat` 원문**이 붙어 있는지. O/X 개수가 질문 1의 근거.
-  - **같은 정보 두 곳** — `BoardHeader`에 select용 `useState`가 따로 있으면 05 `activeTabId` 재발. 완성 조건에 `useState` 검색 항목으로 넣어 둠.
-  - **파생 값을 state에** — 리듀서 state에 `cards`·`filter` 외 키(걸러진 목록, 개수)가 있으면 지적. 05에서 "담을 곳부터 찾는" 습관이 남아 있었음.
-  - **리듀서 순수성·참조 보존** — 안 바뀐 카드를 새 객체로 만들면 실험 C-3이 1줄이 아니라 8줄. 실습 파일에 원인 후보로 적어 둠.
-  - **관찰 절차 준수** — 실험 C는 필터 「전체」·새로고침·콘솔 지우기·한 번 조작. 마운트 로그(`1회`·`2회`)를 셌으면 다시 하게 한다.
-  - lint 확인은 05와 같이 **출력 마지막 줄 붙여 넣기**. 없으면 미체크.
+- **진행 중인 실습**: 없음. **06 Context · useReducer 통과** (2026-09-28). 마지막 리뷰 커밋 `a54a990` (06 Part C).
+- **다음 할 일**: **07 라우팅 출제**. 출제 전에 아래 누적 약점 목록 확인. 06에서 효과가 있었던 방식 유지 — ① 컴포넌트를 Claude가 미리 정적으로 나눠 두기 ② 새 API는 사용자가 요청하면 **06과 다른 작은 예제**(다크모드 등)로 한 단계씩 보여 주고 06에 적용하게 하기(리듀서·Context 둘 다 이 방식으로 뚫림) ③ 예측 → 측정 실험.
+- **06 미답**: 질문 4(`value={{…}}`가 새 객체인데 왜 괜찮았나 / Provider에 무관한 state가 생기면). 사용자가 "나중에 코드 검토로 이해하겠다, 신경 쓰지 마라" — **재촉하지 말 것**. `useMemo`가 자연스럽게 필요해지는 실습에서 다시 만나게 한다.
+- **커밋**: 작업(단계·파트)이 끝나면 **Claude가 커밋·푸시** (2026-09-28, CLAUDE.md). `git diff --stat` 실험은 stat·O/X 뒤에 커밋.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05에서 `memo`/`useMemo`를 "Vue는 의존성을 자동 추적하지만 React는 다 실행하고 비교한다"로 대비시킨 설명이 특히 잘 통했다. 06의 Context는 Vue의 provide/inject, `useReducer`는 Pinia/Vuex의 mutation·action에 비유할 수 있다.
 - **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06 실습 파일에 미리 설명해 둔 것: `useReducer`의 동작, 리듀서 순수성, `switch`, `createContext`/`useContext`의 리렌더 규칙 3가지(value 변경 시 소비자 리렌더 · `memo`는 못 막음 · Provider의 `children`은 안 그림), `<select>` value가 문자열이라 `===`가 안 맞는 것, `findIndex`, `git diff --stat`.
 - 갱신: 2026-09-28
@@ -72,7 +31,7 @@
 - 변하지 않는 값을 `useState`에 넣음 — "state = 시간에 따라 변하는 값" 기준이 아직 자리 잡지 않음 (00)
 - 스타터(샘플 화면)의 숫자·내용에 결과를 맞추려 함 — 요구사항과 데이터가 기준 (00)
 - `key`를 "고유한 값을 넣는 곳" 정도로만 이해 — index가 문제 되는 경우(추가·삭제·정렬 시 state가 엉뚱한 항목에 붙음)를 설명하지 못함 (00)
-- prop 이름 불일치 실수 — 부모가 넘긴 이름과 자식이 받는 이름 (00, 2회)
+- prop 이름 불일치 실수 — 부모가 넘긴 이름과 자식이 받는 이름 (00, 2회 · 05 · 06 `filteredCards`/`cards`). 06에서는 **Context 키 이름**으로도 나옴(`board`/`boards`, `value` 최상위에 없는 `filter`를 꺼냄). 증상은 늘 "값이 `undefined`"
 - 완성 조건을 하나씩 대조하지 않고 "완료" 보고 — 01~04 **4회 연속**(04는 10개 전부 [x]인데 `npm run lint` 경고 1개). **05에서 처음 끊김**: 확인 방법을 "lint 출력 마지막 줄을 보고에 붙여 넣기"로 바꾸자 경고 0으로 마무리. 다만 05에서도 "이전과 동일한 에러라 넘기겠다"고 한 번 넘어가려 했고, 실제로는 새 경고가 섞여 있었다 — **확인 방법을 강제하는 장치는 06에서도 유지**
 - 범용 컴포넌트에 특정 도메인 지식을 넣음 — `Badge`가 프로젝트 status를 앎 (01)
 - 에러 원인을 모른 채 `?.`로 덮음 — 값이 예상과 다르면 먼저 `console.log` (01)
@@ -86,6 +45,8 @@
 - 증상에서 원인을 한 칸 빗나가게 추정 — "리렌더링이 안 된다"(실제로는 state에 잘못된 값이 들어감), "탭을 바꿔도 데이터가 안 바뀐다"(실제로는 `filter(...).status`가 `undefined`) (03). 값을 `console.log`로 찍는 습관은 자리 잡았음
 - 이벤트 핸들러 자리에 함수 호출 결과와 함수 참조를 혼동 — `onSearch={load(key)}`(렌더링 중 즉시 실행) vs `onSearch={() => load(key)}`(호출될 때 실행). `load` 안에 동기 `setState`가 있어서 무한 렌더링으로 바로 드러남. 설명 후 원리는 이해함 — "이벤트 자리엔 항상 함수 참조, 인자를 미리 넣어야 하면 화살표로 감싼다"로 정리 (04)
 - 리듀서에서 state를 직접 변경 — `find`로 꺼낸 카드에 `status`를 대입. `find`는 복사본이 아니라 **같은 객체**를 돌려준다는 점과 02의 불변성 규칙이 리듀서로 옮겨 오지 않음 (06)
+- 넣는 모양과 꺼내는 모양을 맞추지 않음 — Context `value={{ boards }}`로 넣고 `const boards = useBoardState()`로 꺼냄, `export function`을 `import X from`(default)으로 가져옴, `const [dispatch] = useReducer(…)`(배열 구조분해는 이름이 아니라 순서). "보내는 쪽 모양 = 받는 쪽 모양" 한 규칙으로 묶어서 짚으면 빠름 (06)
+- 비슷한 코드를 복사한 뒤 일부만 고침 — `card_deleted`를 `card_moved`의 `map`에서 복사, `filter`로 바꾸고도 콜백은 그대로(객체는 항상 truthy). Context 분리 때 "Provider 두 개"를 **Provider 컴포넌트 두 개**로 읽고 `useReducer`까지 복사 (06)
 - 컴포넌트를 쪼갤 때 자식이 실제로 필요로 하는 값을 빠뜨림 — `BookResult` 분리 후 "다시 시도" 버튼에 `keyword`를 안 넘겨서 빈 검색어로 재요청됨. 원인을 스스로 못 찾고 물어봄 → prop 흐름을 같이 추적해서 원인 확인 (04)
 
 ---
@@ -269,7 +230,7 @@
 - **잘한 점**: 실험을 예측 → 실행 → 기록 순서로 지킴. `memo`가 안 통한 원인을 힌트 없이 참조 비교로 특정. `useState` setter의 안정성을 "메모리 주소가 리렌더 후 재사용된다"로 정확히 재진술. 모순을 스스로 제기하고(타이핑 중 누적 vs 검색 후 초기화) 해소까지 감. lint 0으로 마무리해 4회 연속 약점을 끊음. `useCallback`을 안 남기는 판단(불필요한 최적화 거부).
 - **약점 메모**: prop 이름 불일치 3회째. 파생 값을 "담을 곳"부터 찾는 습관이 남아 있음. 실험 관찰 절차를 느슨하게 지켜 "차이 없음"으로 오판한 사례 1회. lint 경고를 확인 없이 넘기려 한 사례 1회(장치 덕분에 걸림).
 
-### 06 Context · useReducer — 🟡 진행 중
+### 06 Context · useReducer — ✅ 통과 (2026-09-28)
 
 - 출제: 2026-09-23 (`exercises/06-context-and-reducer.md`, `src/starters/Starter06.jsx`, `src/data/board.js`, `src/styles/ui.css`에 `board`·`column`·`column-title`·`select-auto` 추가, `docs/UI.md` 갱신)
 - 출제 의도: 팀 칸반 보드. `App → Board → Column → CardList → Card → CardActions` 다섯 층을 **이름과 층수 고정**으로 만들게 해서 드릴링이 실제로 아프게 했다. 05에서 두 단계 드릴링을 경험했으니 이번엔 그 비용을 숫자로 잰다.
@@ -284,3 +245,59 @@
   - **파일 분리 이유를 설명**: `react/only-export-components` 때문에 Context 객체(`.js`)·Provider(`.jsx`)·훅(`hooks/`)을 나눈다는 것을 실습 파일에 적어, lint 경고를 처음부터 피하게 했다.
   - 트리거를 「담당자 ▸」로 고른 이유: 필터 변경이나 이동은 카드가 언마운트·재마운트돼 마운트 로그가 섞인다. 담당자 변경은 카드 한 장의 필드만 바뀌고 트리 구조가 그대로라 리렌더만 관찰된다.
 
+#### 진행 로그 (2026-09-27~28, 세션 중 현재 상태 블록에 쌓였던 것)
+
+- **진행 중인 실습**: **06 Context · useReducer** (2026-09-23 출제, `exercises/06-context-and-reducer.md`). 세 파트(A 드릴링+리듀서 / B Context / C 리렌더 실험), 파트마다 커밋 5개(A-1·A-2·B-1·B-2·C).
+- **06 출제 직후 조정 (2026-09-23)**: 사용자 요청으로 컴포넌트 6개(`Board`·`BoardHeader`·`Column`·`CardList`·`Card`·`CardActions`)를 Claude가 **정적·하드코딩 상태로 미리 나누고 import까지 연결**해 뒀다. `App.jsx`도 `<Board />`로 교체. 사용자는 마크업을 자르지 않고 props·state·리듀서·Context만 붙인다. 이유: "중요한 건 컴포넌트끼리 데이터를 넘기고 선언하는 것" — 앞으로도 트리가 깊은 실습은 이렇게 낸다.
+- **마지막 리뷰 커밋**: `8ec9794` (05 Part B·C, 통과). 06 사용자 커밋: `87d4e17`(카드 렌더링·리듀서 뼈대), `8691446`(useReducer 적용·열별 카드 분류), `558e2bd`(filter_changed·필터 콜백 연결·import 대소문자 수정). 전부 리뷰 전.
+- **06 Part A-1 진행 상황 (2026-09-27, `558e2bd` 기준)**: 추천 순서 ① 열별 카드 분류 + `Column` count — **완료**. ③ 필터 — **절반**: `Board`의 `useState` 제거(단일 진실 공급원 이해함), `App`의 `handleFilterChange` → `Board` → `BoardHeader` `onChange`로 연결, 리듀서 `filter_changed` case 추가. 남은 순서: ③ 나머지(filter 초기값·제어 select·담당자 조건·헤더 숫자) ② 이동(`card_moved`·`onMove`·`←→ disabled`) ④ Card 마무리(펼치기·담당자·「카드 없음」) ⑤ prop 대조표 → A-1 커밋.
+- **`558e2bd` 시점에 남아 있는 문제** (안내했거나 리뷰 때 짚을 것 — 코드는 Claude가 고치지 않았음):
+  - `filter` 초기값에 **선택지 목록**(처음엔 열 id 배열, 지금은 `{id:"all"} + members` 목록) — "select의 선택지(데이터) vs 지금 골라진 값 하나(state)" 혼동. **세 번** 안내(`filter: "all"`까지 직접 알려 줌)했는데 아직 목록. 약점 목록 후보.
+  - select가 아직 `defaultValue="all"` — `filter` prop을 받기만 하고 `value`에 안 붙임(lint `no-unused-vars` 경고로 드러남). 제어 컴포넌트 설명은 함.
+  - 콜백 prop 이름이 `handleFilterChange` — 요구 2·7은 `onFilterChange`. 동작엔 문제 없음, prop 대조표 단계에서 확인.
+  - `card_moved`가 `{ ...state.cards }` — 배열을 객체에 펼쳐 `cards`·`filter` 키가 사라짐. 안내함.
+  - 담당자 조건 필터링 미구현 — `'1' === 1` 타입 문제는 미리 안내함.
+  - ~~import 대소문자 불일치~~ — 실제로 Vite가 옛 모듈을 계속 써서 `알 수 없는 액션 filter_changed` 발생. 스택의 파일명(`BoardReducer.js`)과 줄 번호(`:8`, 옛 버전의 throw 위치)로 원인 확인 → 사용자가 수정 (`558e2bd`).
+- **06 Part A-1 중간 리뷰 (2026-09-28, 미커밋 작업 트리 기준) — 미완료**:
+  - 해결됨: `filter` 초기값 `"all"` 문자열 · 담당자 필터(`String(card.assigneeId) === filter`) · `Column` count · `←→ disabled`(`columns.findIndex`로 계산, 하드코딩 없음) · 이동 콜백 연결.
+  - **개념 오해 (최우선)**: `card_moved`가 `find`로 찾은 카드에 `board.status = …` **직접 대입**(state 변경) + `{ ...state, board }`로 **`board` 키 추가**. 화면은 움직여 보이지만 리듀서 순수성·"state 두 키"·"안 바뀐 카드는 같은 객체" 세 조건 위반. 질문으로 돌려줌.
+  - 남은 것: select 제어 컴포넌트(`Board`가 `BoardHeader`에 `filter`를 안 넘김, 여전히 `defaultValue`) · 헤더 `8장` 하드코딩 · Card 펼치기/접기 · 콜백 이름(`handleCardMoved`/`handleFilterChange` vs 요구 `onMove`/`onFilterChange`) · prop 대조표 · lint 경고 2개(`BoardHeader` `filter` 미사용, `App` `members` 미사용) · A-1 커밋.
+  - `src/data/members.js`·`Starter06.jsx`는 포매터 변경뿐(내용 동일). 실험 A의 `git diff --stat`을 흐리지 않게 A-1 커밋 전에 되돌리거나 따로 커밋하라고 안내.
+  - **Claude 쪽 실수**: 이번 세션 앞부분(다른 모델)에서 `moveLeft`/`moveRight` 코드를 통째로 써 줬고 "목적지 status를 넘긴다"는 설계도 사실상 Claude가 정함. 질문 2는 본인 말로 답하게 한다. 이후 세션도 힌트 강도 규칙 재확인.
+- **06 Part A-1 재검토 (2026-09-28, 미커밋)**: 리듀서 `card_moved`가 `map` + 해당 카드만 스프레드로 고쳐짐(순수·두 키·참조 보존 모두 OK). select 제어 컴포넌트 · 콜백 이름 `onMove`/`onFilterChange` · 펼치기/접기(`Card` 로컬 `useState`) · lint 0 해결. **남은 것**: 헤더 숫자가 `teamMember.length`(팀원 5명)라 보이는 카드 수가 아님 — 질문으로 돌려줌 · prop 대조표 · 포매터만 바뀐 `members.js`/`Starter06.jsx` 정리 · A-1 커밋.
+- **06 Part A-1 3차 검토 (2026-09-28, 미커밋)**: 헤더 숫자를 `Board`가 렌더 중에 계산(`selectedBoardCount`)해서 `count` prop으로 내림 — state에 안 넣음, OK. **A-1 코드 요구사항 전부 충족.** 제출물만 남음: 포매터 변경(`members.js`/`Starter06.jsx`) 정리 → A-1 커밋 → prop 대조표 + lint 마지막 줄 보고.
+- **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리. "Part A에서 헤더가 filter를 어떻게 바꾸나" → 콜백·클로저·Vue emit 비유로 설명, 통함. 에러가 나자 짐작 대신 콘솔 원문을 요청했고 사용자가 바로 붙여 줌 — 좋은 흐름.
+- **06 Part A-1 통과 (2026-09-28, `38e608f`)**: lint "Found 0 warnings and 0 errors." 사용자가 붙여 넣음. prop 대조표는 사용자 요청으로 **Claude가 대조** — 6쌍 전부 일치. (대조표는 prop 이름 불일치 약점을 겨냥한 장치였으므로, 이번엔 사용자가 직접 하지 않았다는 점만 기록. 실험 A·B의 O/X는 사용자가 직접 해야 결과가 의미 있음.)
+- **실험 A 예측 (2026-09-28, 사용자)**: "6개 파일 — App부터 CardActions까지 prop으로 내려야 하니까". O/X 예측: App(dispatch 처리)·Card(id를 넣는 곳)만 O, 나머지 X. 실제 `git diff --stat`과 비교할 것.
+- **실험 A 결과 (2026-09-28, 미커밋)**: `git diff --stat` 7 files (App·Board·Card·CardActions·CardList·Column·boardReducer). 예측 6 → 리듀서 파일 누락. X = Board·Column·CardList **3개**. 사용자 요청으로 O/X는 Claude가 채움. 삭제 자체는 미동작 — 리듀서가 `{ ...state }`만 반환 + `console.log`(StrictMode 이중 실행으로 두 번 찍힘 → 순수성 설명함) + 이름 `card_delete`(요구는 `card_deleted`). 삭제엔 `filter`라고 규칙 바로 알려 줌.
+- **A-2 리듀서 통과 (2026-09-28)**: `card_deleted`가 `filter((card) => card.id !== action.id)` — 순수·두 키 OK. (`map` 복사 → `filter`+옛 콜백(객체는 항상 truthy라 아무것도 안 지워짐) → 정답, 3번 만에. truthy 규칙 설명함.) 미커밋.
+- **Part A 커밋 완료**: A-1 `38e608f`, A-2 `20b7716`.
+- **Part B-1 진행 (2026-09-28, 미커밋)**: 사용자 요청으로 Context를 예제(다크모드 ThemeContext)로 단계별 안내(1 통 → 2 Provider → 3 useContext·useBoard → 4 BoardHeader → 5 CardActions). 요구 6·7 충족 확인 — 드릴링 0, CardActions가 dispatch 직접, value `{ boards, dispatch }`. 중간에 막힌 곳: `useContext(useBoard)`(훅을 Context 자리에), Context 키 이름 불일치(`board`/`boards`, 최상위 `filter`), `const` 선언 전 사용(TDZ), prop 이름 `filteredCards`/`cards`(**prop 이름 불일치 4회째**), Provider 안 콜백을 value에 넣음 → "컴포넌트 함수는 렌더마다 재실행, dispatch만 안정" 설명(Vue setup 1회 대비). card_moved는 목적지 status 유지(CardActions가 columns를 앎) — 질문 2 재료. 리듀서에 `console.log` 남아 있음(지적함).
+- **요구 8 결과**: "Uncaught Error: useBoard는 BoardContext 안에서만 사용할 수 있다." (본인 메시지 확인).
+- **B-1 커밋**: `1e5b996`.
+- **실험 B 예측 (2026-09-28, 사용자)**: 리듀서가 다음 담당자 계산. "CardActions.jsx와 boardReducer.js 2개만, 나머지 jsx는 영향 없음". O/X 예측은 둘 다 O로 읽힘. → **수정 예측**: Card.jsx도 바뀐다("members를 갖고 있으니") → 3개.
+- **실험 B 결과 (B-2 `74c40d3`)**: stat 3 files — CardActions(O: 다음 담당자 계산 + dispatch) · boardReducer(O: `assignee_changed`) · Card(빈 줄 1개 삭제뿐, 기능 변경 없음 → O/X 대상 아님). **실질 2개, X 0개** (A: 7개·X 3개). 처음 예측(2개)이 실질과 일치. 설계: 예측은 "리듀서가 계산"이었으나 최종은 **CardActions가 계산**(리듀서에 data import를 피하려고 — 완성 조건상 board.js import는 허용이라 알려 줌, 질문 2 재료). 과정: 순환에 "없음" 누락 → 수정, Card가 dispatch하고 `changeAssignee`를 prop으로 내림 → 렌더마다 새 함수라 memo 무력화 설명("비효율"이 아니라 `===`가 달라지는 것) → CardActions로 이동, `members`를 prop으로 받음 → "import 가능한 정적 데이터는 직접 import, 부모만 아는 값만 props" 정리 → 직접 import.
+- **Part C 예측 (2026-09-28, 사용자, 준비 코드 확인 후)**: C-1(펼치기) CardActions **1줄**(클릭한 카드만) · Board **0줄**("Card보다 상위라서"). C-2(담당자 ▸) CardActions **1줄** · Board **1줄** · memo 영향은 "모르겠음". (준비 중 `useRenderCount` default/named import 혼동 → 짝 규칙 설명. 처음 C-2를 "새로 만들어져서 1회"로 써서 N값 vs 줄 수, 리렌더 vs 리마운트 구분 확인 → "줄 수 1줄"로 확정.)
+- **C-1·C-2 결과 (2026-09-28)**: 사용자가 콘솔 안 지우고 펼치기+담당자를 연달아 함 → N값으로 역추적: 조작 후 묶음 1개(CardActions 3회 ×8 · Board 3회) = 담당자. **C-1: CardActions 0줄 · Board 0줄**(예측 1·0), **C-2: CardActions 8줄 · Board 1줄**(예측 1·1). C-1은 단독 재확인 요청. 질문으로 돌려줌: C-1 왜 0(memo + card 참조 동일 + changeAssignee를 옮긴 효과), C-2 왜 memo가 못 막나(규칙 1·2).
+- **C-1 재확인 0줄, 사용자 설명 정확**(memo가 props 비교, card 불변). **C-2 사용자 추론**: "dispatch 참조가 바뀌었다" — 공유·참조 변경 방향은 맞으나 대상이 틀림. useContext는 value 객체 통째로 구독·구조분해는 받은 뒤의 JS 문법·memo는 props 경로만 막음 → API 동작이라 바로 설명함. C-3 예측 요청.
+- **C-3 예측**: CardActions **1줄**(담당자 바뀐 카드만) · Board **1줄**("담당자가 바뀌니 board는 바뀐다").
+- **C-3 결과 (Part C 커밋 a54a990)**: CardActions **1줄** · Board **1줄** — 예측과 일치. CardActions 1줄 = dispatch 통 불변 + memo + 리듀서 참조 보존(바뀐 카드만 새 객체). **Board 1줄은 이 설계에서 정상**: Board가 필터링·개수 계산 때문에 useBoardState를 읽음. 실습 파일 완성 조건 "Board 0줄"은 Board가 state를 안 읽는 전제였는데 요구사항에 안 적음(출제 실수) → "1줄 이유를 설명하면 통과"로 조정. 분리 중 막힌 곳: Provider(통 태그) vs Provider 컴포넌트 혼동 → 두 번째 Provider 컴포넌트를 만들고 useReducer를 또 부름, `const [dispatch] = useReducer` 배열 구조분해 순서, value 객체 래핑과 꺼내는 쪽 불일치.
+- **06 질문 1차 답변 (2026-09-28)**: 1 "멀리 떨어져 있으면 고려 + 리렌더 비용" — 기준 OK, Context는 드릴링↓·리렌더 범위↑임을 보충. 2 무엇만 있고 이유 없음 → 이유 요청. 3 "질문을 더 명확하게" → 3-1(펼침을 useState에 둔 이유·C-1 연결)·3-2(전역/로컬 기준 한 줄)·3-3(card_deleted가 filter를 all로 되돌리는 가정 + BoardHeader 로컬 useState → select 표시 vs 목록)로 다시 씀. 4 **미답** — 사용자가 "나중에 코드 검토로 이해하겠다, 신경 쓰지 마라"(재촉하지 말 것). 5 memo 부분 정확, 나머지 세 항목 요청.
+- **다음 할 일**: 2·3·5 보충 답변 받기. 받으면 PROGRESS 실습 기록 작성 + ROADMAP 06 ✅ 및 개념 체크.
+- **06 리뷰 때 볼 것**:
+  - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
+  - **실험 A·B의 `git diff --stat` 원문**이 붙어 있는지. O/X 개수가 질문 1의 근거.
+  - **같은 정보 두 곳** — `BoardHeader`에 select용 `useState`가 따로 있으면 05 `activeTabId` 재발. 완성 조건에 `useState` 검색 항목으로 넣어 둠.
+  - **파생 값을 state에** — 리듀서 state에 `cards`·`filter` 외 키(걸러진 목록, 개수)가 있으면 지적. 05에서 "담을 곳부터 찾는" 습관이 남아 있었음.
+  - **리듀서 순수성·참조 보존** — 안 바뀐 카드를 새 객체로 만들면 실험 C-3이 1줄이 아니라 8줄. 실습 파일에 원인 후보로 적어 둠.
+  - **관찰 절차 준수** — 실험 C는 필터 「전체」·새로고침·콘솔 지우기·한 번 조작. 마운트 로그(`1회`·`2회`)를 셌으면 다시 하게 한다.
+  - lint 확인은 05와 같이 **출력 마지막 줄 붙여 넣기**. 없으면 미체크.
+
+#### 최종 리뷰 (2026-09-28) — 통과
+
+- **커밋**: A-1 `38e608f` · A-2 `20b7716` · B-1 `1e5b996` · B-2 `74c40d3` · C `a54a990`. 포매터 변경은 `050ad40`로 분리.
+- **실험 숫자**: A(props) 7 files · X 3 → B(Context) 실질 2 files · X 0. C-1 CardActions 0 · Board 0 / C-2 8 · 1 / C-3 1 · 1 (C-3 예측 적중). Board 1줄은 Board가 상태 통을 읽는 설계라 정상 — 완성 조건의 "Board 0줄" 전제를 안 적은 출제 실수, 실습 파일에 보충함(`d665dc9`).
+- **질문 답변**: ① "멀리 떨어져 있으면 Context, 리렌더 비용도 고려" — Context는 드릴링↓·리렌더 범위↑로 보충. ② 목적지 status를 담았다 → "방향만 담았으면 CardActions가 columns를 몰라도 됐다, 놓쳤다". ③ 펼침은 그 카드만 쓰니 로컬 / 3-3(가정: 삭제 시 필터 all 복귀 + BoardHeader 로컬 useState) → "목록은 전체, select는 이전 값" 정답. ④ 미답(보류). ⑤ "Context는 부모를 거치지 않고 직접 알려서 memo가 못 막는다" 정확. 나머지는 C-3 예측·해석 대화로 확인.
+- **잘한 점**: 리듀서 참조 보존(`map` + 바뀐 카드만 스프레드)이 C-3 1줄로 이어짐. 펼침을 로컬 state로 둬서 C-1 0줄. C-2에서 "8개가 전부 = 공유하는 무언가의 참조가 바뀌었다"까지 스스로 추론(대상만 dispatch로 잘못 짚음). "import할 수 있는 정적 데이터 vs 부모만 아는 값" 기준을 질문해서 얻고 바로 적용. 상태를 셀 수 있게 만든 뒤(예측→측정) 예측이 점점 맞아짐(C-3 적중).
+- **약점 메모**: 새 API의 **구조**(Provider 태그 vs Provider 컴포넌트, useContext에 무엇을 넣나)는 예제만으로 안 넘어감 — 이름이 겹치는 개념은 표로 먼저 구분해 줄 것. 완료 보고 전에 브라우저 확인을 건너뛰는 일이 여러 번("3단계 완료"인데 화면이 뜰 수 없는 코드) — 완료 기준을 "화면에서 무엇이 보이면"으로 적어 준 것이 효과 있었음.
+- **Claude 쪽 실수**: 세션 초반(다른 모델) `moveLeft`/`moveRight` 코드를 통째로 써 주고 설계를 대신 정함. "에러 화면만 안 뜨면 된다"고 잘못 안내(실제로는 에러가 정상). Context 분리 설명에서 "Provider"를 두 의미로 섞어 씀 → 사용자가 Provider 컴포넌트를 하나 더 만듦.
