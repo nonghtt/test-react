@@ -37,7 +37,8 @@
 - **C-1 재확인 0줄, 사용자 설명 정확**(memo가 props 비교, card 불변). **C-2 사용자 추론**: "dispatch 참조가 바뀌었다" — 공유·참조 변경 방향은 맞으나 대상이 틀림. useContext는 value 객체 통째로 구독·구조분해는 받은 뒤의 JS 문법·memo는 props 경로만 막음 → API 동작이라 바로 설명함. C-3 예측 요청.
 - **C-3 예측**: CardActions **1줄**(담당자 바뀐 카드만) · Board **1줄**("담당자가 바뀌니 board는 바뀐다").
 - **C-3 결과 (Part C 커밋 a54a990)**: CardActions **1줄** · Board **1줄** — 예측과 일치. CardActions 1줄 = dispatch 통 불변 + memo + 리듀서 참조 보존(바뀐 카드만 새 객체). **Board 1줄은 이 설계에서 정상**: Board가 필터링·개수 계산 때문에 useBoardState를 읽음. 실습 파일 완성 조건 "Board 0줄"은 Board가 state를 안 읽는 전제였는데 요구사항에 안 적음(출제 실수) → "1줄 이유를 설명하면 통과"로 조정. 분리 중 막힌 곳: Provider(통 태그) vs Provider 컴포넌트 혼동 → 두 번째 Provider 컴포넌트를 만들고 useReducer를 또 부름, `const [dispatch] = useReducer` 배열 구조분해 순서, value 객체 래핑과 꺼내는 쪽 불일치.
-- **다음 할 일**: 06 완료 보고 — 질문 1~5 답변(질문 5는 Board 1줄 이유 포함). 받으면 PROGRESS 실습 기록 작성 + ROADMAP 06 ✅ 및 개념 체크.
+- **06 질문 1차 답변 (2026-09-28)**: 1 "멀리 떨어져 있으면 고려 + 리렌더 비용" — 기준 OK, Context는 드릴링↓·리렌더 범위↑임을 보충. 2 무엇만 있고 이유 없음 → 이유 요청. 3 "질문을 더 명확하게" → 3-1(펼침을 useState에 둔 이유·C-1 연결)·3-2(전역/로컬 기준 한 줄)·3-3(card_deleted가 filter를 all로 되돌리는 가정 + BoardHeader 로컬 useState → select 표시 vs 목록)로 다시 씀. 4 **미답** — 사용자가 "나중에 코드 검토로 이해하겠다, 신경 쓰지 마라"(재촉하지 말 것). 5 memo 부분 정확, 나머지 세 항목 요청.
+- **다음 할 일**: 2·3·5 보충 답변 받기. 받으면 PROGRESS 실습 기록 작성 + ROADMAP 06 ✅ 및 개념 체크.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
   - **실험 A·B의 `git diff --stat` 원문**이 붙어 있는지. O/X 개수가 질문 1의 근거.
