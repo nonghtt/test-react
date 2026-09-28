@@ -2,7 +2,13 @@ import BoardHeader from "./BoardHeader";
 import Column from "./Column";
 import { columns } from "../../../data/board";
 
-export default function Board({ cards, filter, onMove, onFilterChange }) {
+export default function Board({
+  cards,
+  filter,
+  onMove,
+  onDelete,
+  onFilterChange,
+}) {
   const isAllType = filter === "all";
   const selectedBoardCount = isAllType
     ? cards.length
@@ -32,6 +38,7 @@ export default function Board({ cards, filter, onMove, onFilterChange }) {
               count={filteredCards.length}
               cards={filteredCards}
               onMove={onMove}
+              onDelete={onDelete}
             />
           );
         })}

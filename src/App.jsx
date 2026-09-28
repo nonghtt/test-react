@@ -18,11 +18,16 @@ export default function App() {
     dispatch({ type: "filter_changed", value });
   }
 
+  function onDelete(id) {
+    dispatch({ type: "card_deleted", id });
+  }
+
   return (
     <Board
       cards={boards.cards}
       filter={boards.filter}
       onMove={onMove}
+      onDelete={onDelete}
       onFilterChange={onFilterChange}
     />
   );

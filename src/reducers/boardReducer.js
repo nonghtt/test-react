@@ -9,6 +9,21 @@ export function boardReducer(state, action) {
       };
     }
 
+    case "card_deleted": {
+      return {
+        ...state,
+        cards: state.cards.filter((card) => card.id !== action.id),
+      };
+    }
+    // case "card_deleted": {
+    //   return {
+    //     ...state,
+    //     cards: state.cards.map((card) =>
+    //       card.id === action.id ? { ...card, status: action.status } : card,
+    //     ),
+    //   };
+    // }
+
     case "filter_changed": {
       return { ...state, filter: action.value };
     }

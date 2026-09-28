@@ -3,7 +3,7 @@ import { members } from "../../../data/members";
 import { columns } from "../../../data/board";
 import { useState } from "react";
 
-export default function Card({ card, onMove }) {
+export default function Card({ card, onMove, onDelete }) {
   const assignee = members.find((member) => member.id === card.assigneeId);
   const columnIndex = columns.findIndex((c) => c.id === card.status);
   const isFirst = columnIndex === 0;
@@ -20,6 +20,10 @@ export default function Card({ card, onMove }) {
     onMove(card.id, newStatus);
   }
 
+  function deleteCard() {
+    onDelete(card.id);
+  }
+
   return (
     <div className="card stack-sm">
       <div className="row row-between">
@@ -32,7 +36,7 @@ export default function Card({ card, onMove }) {
           {isOpen ? "접기" : "펼치기"}
         </button>
       </div>
-      {/* <p className="card-desc">{card.description}</p> */}
+
       {isOpen && <p className="card-desc">{card.description}</p>}
       {assignee ? (
         <div className="row">
@@ -53,6 +57,7 @@ export default function Card({ card, onMove }) {
         isLast={isLast}
         moveLeft={moveLeft}
         moveRight={moveRight}
+        onDelete={deleteCard}
       />
     </div>
   );
