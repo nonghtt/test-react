@@ -30,7 +30,7 @@
 - **Part B-1 진행 (2026-09-28, 미커밋)**: 사용자 요청으로 Context를 예제(다크모드 ThemeContext)로 단계별 안내(1 통 → 2 Provider → 3 useContext·useBoard → 4 BoardHeader → 5 CardActions). 요구 6·7 충족 확인 — 드릴링 0, CardActions가 dispatch 직접, value `{ boards, dispatch }`. 중간에 막힌 곳: `useContext(useBoard)`(훅을 Context 자리에), Context 키 이름 불일치(`board`/`boards`, 최상위 `filter`), `const` 선언 전 사용(TDZ), prop 이름 `filteredCards`/`cards`(**prop 이름 불일치 4회째**), Provider 안 콜백을 value에 넣음 → "컴포넌트 함수는 렌더마다 재실행, dispatch만 안정" 설명(Vue setup 1회 대비). card_moved는 목적지 status 유지(CardActions가 columns를 앎) — 질문 2 재료. 리듀서에 `console.log` 남아 있음(지적함).
 - **요구 8 결과**: "Uncaught Error: useBoard는 BoardContext 안에서만 사용할 수 있다." (본인 메시지 확인).
 - **B-1 커밋**: `1e5b996`.
-- **실험 B 예측 (2026-09-28, 사용자)**: 리듀서가 다음 담당자 계산. "CardActions.jsx와 boardReducer.js 2개만, 나머지 jsx는 영향 없음". O/X 예측은 둘 다 O로 읽힘.
+- **실험 B 예측 (2026-09-28, 사용자)**: 리듀서가 다음 담당자 계산. "CardActions.jsx와 boardReducer.js 2개만, 나머지 jsx는 영향 없음". O/X 예측은 둘 다 O로 읽힘. → **수정 예측**: Card.jsx도 바뀐다("members를 갖고 있으니") → 3개.
 - **다음 할 일**: 실험 B 구현 → 커밋 전 `git diff --stat` + O/X(A: 7개·X 3개와 나란히) → Claude가 B-2 커밋 → Part C. 질문 1은 X=3 근거로 사용자가 작성. 이전 메모: 실험 A 구현 → 커밋 전 `git diff --stat` 원문 + O/X. 최종적으로 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
   - **prop 대조표**(요구 3)가 보고에 있는지. 없으면 Part A 통과 보류. prop 이름 불일치 3회째(00·05)를 겨냥한 장치.
