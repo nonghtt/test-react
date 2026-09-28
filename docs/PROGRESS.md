@@ -19,6 +19,7 @@
   - 남은 것: select 제어 컴포넌트(`Board`가 `BoardHeader`에 `filter`를 안 넘김, 여전히 `defaultValue`) · 헤더 `8장` 하드코딩 · Card 펼치기/접기 · 콜백 이름(`handleCardMoved`/`handleFilterChange` vs 요구 `onMove`/`onFilterChange`) · prop 대조표 · lint 경고 2개(`BoardHeader` `filter` 미사용, `App` `members` 미사용) · A-1 커밋.
   - `src/data/members.js`·`Starter06.jsx`는 포매터 변경뿐(내용 동일). 실험 A의 `git diff --stat`을 흐리지 않게 A-1 커밋 전에 되돌리거나 따로 커밋하라고 안내.
   - **Claude 쪽 실수**: 이번 세션 앞부분(다른 모델)에서 `moveLeft`/`moveRight` 코드를 통째로 써 줬고 "목적지 status를 넘긴다"는 설계도 사실상 Claude가 정함. 질문 2는 본인 말로 답하게 한다. 이후 세션도 힌트 강도 규칙 재확인.
+- **06 Part A-1 재검토 (2026-09-28, 미커밋)**: 리듀서 `card_moved`가 `map` + 해당 카드만 스프레드로 고쳐짐(순수·두 키·참조 보존 모두 OK). select 제어 컴포넌트 · 콜백 이름 `onMove`/`onFilterChange` · 펼치기/접기(`Card` 로컬 `useState`) · lint 0 해결. **남은 것**: 헤더 숫자가 `teamMember.length`(팀원 5명)라 보이는 카드 수가 아님 — 질문으로 돌려줌 · prop 대조표 · 포매터만 바뀐 `members.js`/`Starter06.jsx` 정리 · A-1 커밋.
 - **이번 세션 메모**: 리듀서 문법에서 막혀서 "진행할 수 없다"고 함 → 06과 다른 예제(할 일 목록 + showDone)로 리듀서 파일·`useReducer`·콜백·자식까지 전체 흐름을 보여 줌. 이후 스스로 적용함. "왜 cards와 filter를 한 리듀서에?"를 물어봄 → Pinia store 하나(state + getter=파생 값) 비유가 통함. "filter에 상태도 담아야 하나?" → 상태는 검색 조건이 아니라 열 배치라고 정리. "Part A에서 헤더가 filter를 어떻게 바꾸나" → 콜백·클로저·Vue emit 비유로 설명, 통함. 에러가 나자 짐작 대신 콘솔 원문을 요청했고 사용자가 바로 붙여 줌 — 좋은 흐름.
 - **다음 할 일**: 위 "남은 것"을 사용자가 마무리 → A-1 커밋(`feat(06): Part A-1 - 리듀서 · 트리 · 이동 · 필터`) → prop 대조표 + lint 마지막 줄과 함께 다시 보고. 그다음 실험 A. 최종적으로 사용자가 "06 Part A 완료" 또는 "06 완료"라고 하면 `git log --oneline`으로 06 출제 커밋 이후의 `feat(06)` 커밋을 찾아 리뷰. 파트별로 나눠 보고할 수 있게 냈으므로 중간 보고도 받는다.
 - **06 리뷰 때 볼 것**:
