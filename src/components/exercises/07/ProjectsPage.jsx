@@ -1,12 +1,14 @@
 import Tab from "../../ui/Tab";
 import ProjectCard from "./ProjectCard";
 import { projects } from "../../../data/projects";
-import { useState } from "react";
 import { statusInfo } from "../../../data/projects";
-// 정적 버전. 「전체」 탭이 골라진 상태, 카드 한 장이 하드코딩되어 있다.
-// 빈 상태 — 걸러진 카드가 0개면 grid 대신 <div className="empty">이 상태의 프로젝트가 없습니다</div>
+import { useSearchParams } from "react-router";
 export default function ProjectsPage() {
-  const [activeTabId, setActiveTabId] = useState("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTabId =
+    searchParams.get("status") in statusInfo
+      ? searchParams.get("status")
+      : "all";
 
   const statusArray = Object.keys(statusInfo);
 
@@ -25,6 +27,14 @@ export default function ProjectsPage() {
     ? projects
     : projects.filter((project) => project.status === activeTabId);
 
+  function handleTabBtnClick(status) {
+    if (status in statusInfo) {
+      setSearchParams({ status });
+    } else {
+      setSearchParams({});
+    }
+  }
+
   return (
     <>
       <h1>프로젝트</h1>
@@ -32,7 +42,7 @@ export default function ProjectsPage() {
         tabs={tabs}
         activeTabId={activeTabId}
         handleTabBtnClick={(id) => {
-          setActiveTabId(id);
+          handleTabBtnClick(id);
         }}
       />
 
