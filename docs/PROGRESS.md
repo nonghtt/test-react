@@ -3,12 +3,13 @@
 ## 현재 상태
 
 - **진행 중인 실습**: **07 라우팅** (2026-09-29 출제, `exercises/07-routing.md`). 세 파트(A 라우트 뼈대 / B URL이 state / C 페이지가 바뀔 때 state), Claude 커밋 5개(A · B-1 · B-2 · C-1 · C-2). 마지막 리뷰 커밋은 06의 `a54a990`, 07 출제 커밋은 `git log`의 `docs: 07 …` 줄.
-- **다음 할 일**: 사용자가 Part A 진행. 파트가 끝났다고 하면 확인 후 Claude가 커밋·푸시. 실험 표는 **예측이 먼저 적혀 있는지** 확인하고 받는다.
+- **다음 할 일**: Part A 완료(`cd36a5e`, 실험 A 예측 5/5 적중). 사용자가 **Part B**(B-1 `useState` 탭 → 실험 B-1 → B-2 `useSearchParams` → 실험 B-2) 진행. 파트가 끝났다고 하면 확인 후 Claude가 커밋·푸시. 실험 표는 **예측이 먼저 적혀 있는지** 확인하고 받는다.
+- **정리 안 된 변경**: `exercises/07-routing.md`의 "이름이 비슷한 것들" 표를 사용자 에디터 포매터가 열 정렬만 바꿈(내용 동일). 커밋에서 제외해 둠 — 사용자에게 유지/되돌리기를 물었으나 답 없음.
 - **06 미답**: 질문 4(`value={{…}}`가 새 객체인데 왜 괜찮았나 / Provider에 무관한 state가 생기면). 사용자가 "나중에 코드 검토로 이해하겠다, 신경 쓰지 마라" — **재촉하지 말 것**. `useMemo`가 자연스럽게 필요해지는 실습에서 다시 만나게 한다.
 - **커밋**: 작업(단계·파트)이 끝나면 **Claude가 커밋·푸시** (2026-09-28, CLAUDE.md). `git diff --stat` 실험은 stat·O/X 뒤에 커밋.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05 `memo`/`useMemo`는 "Vue는 의존성 자동 추적, React는 다 실행하고 비교", 06 Context=provide/inject · `useReducer`=Pinia store가 잘 통했다. 07 실습 파일에 Vue Router 대응표를 넣어 둠(`router-view`↔`Outlet`, `$route.query`↔`useSearchParams` 등).
 - **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06에서 효과가 있었던 방식 유지 — ① 컴포넌트를 Claude가 미리 정적으로 나눠 두기(07도 7개 미리 나눔) ② 새 API는 사용자가 요청하면 **07과 다른 작은 예제**로 한 단계씩 ③ 예측 → 측정 실험 ④ 이름이 겹치는 개념은 표로 먼저 구분(07 "이름이 비슷한 것들" 표). 07 실습 파일에 미리 설명해 둔 것: Vue Router 대응표, `BrowserRouter`/`Routes`/`Route`/`Link`/`NavLink`/`Navigate`/`useNavigate` 구분, `Link` vs `<a>`의 메커니즘, URL 값은 문자열·`NaN`, `useSearchParams`의 get/set/`{}`·`null`, `navigate`의 `replace`, `Outlet context` 모양 규칙, `react-router-dom`이 v8에서 없어진 것.
-- 갱신: 2026-09-29
+- 갱신: 2026-09-29 (Part A 완료)
 
 세션이 새로 시작되면 이 블록만 보면 됩니다. 실습이 끝날 때마다 Claude가 갱신합니다.
 
@@ -40,7 +41,8 @@
 - ~~`key`를 "고유한 값을 넣는 곳" 정도로만 이해~~ — 01 질문 4번에서 정확히 답변 (해결)
 - ~~`key={index}` 습관~~ — 02 2차에서 `item.id`로 수정, 이유도 설명 (해결)
 - 중간 리뷰 지적 사항을 다음 보고 전에 다시 훑지 않음 — 02 중간 리뷰 6개 중 3개(index key, price 포맷, main.jsx) 미반영 (02)
-- 화살표 함수의 블록 본문에서 `return` 누락 — `map`/`filter` 콜백이 조용히 `undefined`를 돌려줘 나중에 터짐 (01, 03에서 4회). 규칙을 설명한 뒤로는 재발 없음
+- 화살표 함수의 블록 본문에서 `return` 누락 — `map`/`filter` 콜백이 조용히 `undefined`를 돌려줘 나중에 터짐 (01, 03에서 4회). 규칙 설명 후 04~06 재발 없다가 **07 Part A에서 2회 재발**(`ProjectCard` 태그 `map`, 상세 참여자 `map` — 둘 다 `=> { <JSX/>; }`). JSX를 돌려주는 `map`에서 특히 나옴
+- effect 실행 시점과 렌더 변수 오해 — `let project = {}; useEffect(() => { project = find(...) })`로 "마운트 전에 채워질 것"이라 예상 (07). 렌더 → 커밋·페인트 → effect 순서, 지역 변수 재할당은 리렌더를 안 일으키고 다음 렌더에서 초기화됨을 설명 → 렌더 중 `find`로 고침. **렌더 중 계산 가능한 값을 effect에 넣는 패턴** — C-1(`useEffect`로 초안 리셋)에서 재발 가능성 높음
 - 배열 메서드 선택 — `map`(길이 유지·변환) / `filter`(골라내기) / `find`(하나 집기)를 혼동. 삭제에 `map`, 단일 조회에 `filter(...)[0]` (03) · **06 재발**: 규칙을 바로 알려 준 직후에도 `card_deleted`를 `card_moved`의 `map` 복사로 구현 → status가 `undefined`가 돼 화면에선 사라진 듯 보이고 헤더 숫자는 그대로. "비슷한 case 복사 후 수정" 습관이 원인일 수 있음 (06)
 - 증상에서 원인을 한 칸 빗나가게 추정 — "리렌더링이 안 된다"(실제로는 state에 잘못된 값이 들어감), "탭을 바꿔도 데이터가 안 바뀐다"(실제로는 `filter(...).status`가 `undefined`) (03). 값을 `console.log`로 찍는 습관은 자리 잡았음
 - 이벤트 핸들러 자리에 함수 호출 결과와 함수 참조를 혼동 — `onSearch={load(key)}`(렌더링 중 즉시 실행) vs `onSearch={() => load(key)}`(호출될 때 실행). `load` 안에 동기 `setState`가 있어서 무한 렌더링으로 바로 드러남. 설명 후 원리는 이해함 — "이벤트 자리엔 항상 함수 참조, 인자를 미리 넣어야 하면 화살표로 감싼다"로 정리 (04)
@@ -324,3 +326,15 @@
   - C-1을 `useEffect`로 고쳤는지, `key`를 어디에 줬는지(`CommentBox` 또는 그 위) — 이유를 설명하는지.
   - `setProjects`나 새 배열을 페이지가 만드는지(06 `cards_set`과 같은 문제), Outlet context의 넣는 모양/꺼내는 모양.
   - 렌더 중 `navigate()` 호출(04 즉시 실행 함정).
+
+#### Part A 진행 기록 (2026-09-29, `cd36a5e`)
+
+- **실험 A**: 예측 5/5 적중 (사용자 보고). `/` → 목록·주소창 `/projects` / `/projects/23` → 상세 / `/projects/abc` → 상세-없음 / `/projects/23/edit` → 404 / `/project` → 404. 질문 1("누가 무엇을 보고 없다고 판단했나")은 완료 보고 때.
+- **잘한 점**: `path` 없는 레이아웃 라우트 + `/` 자식에 `<Navigate replace />`를 스스로 구성. 카드 `map`을 `ProjectCard` 밖(`ProjectsPage`)으로 옮기고 `key`를 바깥 요소에. `find`에서 `String(project.id)`로 형 맞춤. 없는 프로젝트를 02 `CartItems`를 참고해 early return으로 처리(01 약점 유지 확인). 이전/다음을 `findIndex` ± 1로(`id + 1` 함정 피함).
+- **지나온 문제** (모두 질문·설명 후 사용자가 고침):
+  - `ProjectCard`가 `projects` 배열을 받아 안에서 `map` → `ProjectCard ×N` 구조 질문으로 이동.
+  - `project.tags((tag) => …)` — 배열을 함수로 호출(`is not a function`). 또 스타터의 카드 배지(상태 배지)를 태그로 오독.
+  - effect로 프로젝트 찾기(위 약점 목록 참고). `'12' === 12`도 함께 설명.
+  - `Link`에 `disabled` — `<a>`에는 `disabled` 속성이 없고 `:disabled`도 안 걸림을 HTML 규칙으로 설명 → 조건에 따라 `Link` / `<button disabled>`를 고르게 고침.
+  - 없는 프로젝트 문구의 `(id: 999)` 하드코딩 → `projectId`로.
+- **남은 것(비차단)**: 목록 카드와 상세의 상태 `Badge`에 `key={project.status}`가 붙어 있음(목록 밖 `key`). Part C에서 `key`의 리셋 의미를 배울 때 다시 볼 것 — 지금은 빼라고만 말해 둠.
