@@ -8,7 +8,8 @@
 - **커밋**: 작업(단계·파트)이 끝나면 **Claude가 커밋·푸시** (2026-09-28, CLAUDE.md). `git diff --stat` 실험은 stat·O/X 뒤에 커밋.
 - 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05에서 `memo`/`useMemo`를 "Vue는 의존성을 자동 추적하지만 React는 다 실행하고 비교한다"로 대비시킨 설명이 특히 잘 통했다. 06의 Context는 Vue의 provide/inject, `useReducer`는 Pinia/Vuex의 mutation·action에 비유할 수 있다.
 - **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06 실습 파일에 미리 설명해 둔 것: `useReducer`의 동작, 리듀서 순수성, `switch`, `createContext`/`useContext`의 리렌더 규칙 3가지(value 변경 시 소비자 리렌더 · `memo`는 못 막음 · Provider의 `children`은 안 그림), `<select>` value가 문자열이라 `===`가 안 맞는 것, `findIndex`, `git diff --stat`.
-- 갱신: 2026-09-28
+- **06 통과 후**: 사용자 요청으로 CardActions·리듀서 참조 구현을 Claude가 작성(2026-09-29, 06 기록 맨 끝). 07 출제 시 "액션은 값보다 의도" 관점 이어 가기.
+- 갱신: 2026-09-29
 
 세션이 새로 시작되면 이 블록만 보면 됩니다. 실습이 끝날 때마다 Claude가 갱신합니다.
 
@@ -301,3 +302,8 @@
 - **잘한 점**: 리듀서 참조 보존(`map` + 바뀐 카드만 스프레드)이 C-3 1줄로 이어짐. 펼침을 로컬 state로 둬서 C-1 0줄. C-2에서 "8개가 전부 = 공유하는 무언가의 참조가 바뀌었다"까지 스스로 추론(대상만 dispatch로 잘못 짚음). "import할 수 있는 정적 데이터 vs 부모만 아는 값" 기준을 질문해서 얻고 바로 적용. 상태를 셀 수 있게 만든 뒤(예측→측정) 예측이 점점 맞아짐(C-3 적중).
 - **약점 메모**: 새 API의 **구조**(Provider 태그 vs Provider 컴포넌트, useContext에 무엇을 넣나)는 예제만으로 안 넘어감 — 이름이 겹치는 개념은 표로 먼저 구분해 줄 것. 완료 보고 전에 브라우저 확인을 건너뛰는 일이 여러 번("3단계 완료"인데 화면이 뜰 수 없는 코드) — 완료 기준을 "화면에서 무엇이 보이면"으로 적어 준 것이 효과 있었음.
 - **Claude 쪽 실수**: 세션 초반(다른 모델) `moveLeft`/`moveRight` 코드를 통째로 써 주고 설계를 대신 정함. "에러 화면만 안 뜨면 된다"고 잘못 안내(실제로는 에러가 정상). Context 분리 설명에서 "Provider"를 두 의미로 섞어 씀 → 사용자가 Provider 컴포넌트를 하나 더 만듦.
+
+#### 통과 후 참고 구현 (2026-09-29, 사용자 요청으로 Claude 작성)
+
+- 사용자가 "CardActions가 최소한만 아는가" 검토 요청 → 부분 충족(columns 목적지 계산 · members 순환 규칙 · card 통째로 받음). 이어서 **이상적인 코드를 Claude가 직접 써 달라**고 명시 요청 → 작성.
+- 변경: 액션을 값이 아니라 **의도**로 — `card_moved`는 `direction`('left'/'right'), `assignee_changed` → `assignee_cycled`(값 없음). 다음 열·다음 담당자 계산은 리듀서로(`nextColumnId`·`nextAssigneeId`, 순환 순서는 `[null, ...ids]` 배열로 명시). CardActions는 `id`·`status` 원시값만 받고 columns는 첫/끝 판정에만 씀. 이론상 C-3은 CardActions 0줄.

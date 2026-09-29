@@ -34,7 +34,7 @@ export default function Card({ card }) {
           <span className="muted text-sm">담당자 없음</span>
         </div>
       )}
-      <CardActions card={card} />
+      <CardActions id={card.id} status={card.status} />
     </div>
   );
 }
