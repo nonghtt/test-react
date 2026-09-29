@@ -145,6 +145,10 @@
 .btn:hover {
   background: var(--bg-muted);
 }
+/* <a>·<Link>에 btn을 붙였을 때 — 링크 밑줄 없이 버튼처럼 (07) */
+a.btn:hover {
+  text-decoration: none;
+}
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;

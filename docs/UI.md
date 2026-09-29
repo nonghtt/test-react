@@ -29,6 +29,8 @@ CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니
 
 ## 헤더 / 네비게이션 (7단계 라우팅용)
 
+헤더는 `container` 밖에 두고, 페이지 본문은 그 아래 `<main className="container stack">`에. 라우터의 `NavLink`는 활성일 때 `active` 클래스를 스스로 붙인다.
+
 ```jsx
 <header className="header">
   <span className="brand">MyApp</span>
@@ -67,7 +69,10 @@ CSS는 미리 만들어져 있고 `src/main.jsx`에서 전역으로 import됩니
 ```jsx
 <button className="btn btn-primary" disabled={saving}>저장</button>
 <button className="btn btn-danger btn-sm">삭제</button>
+<a className="btn btn-sm" href="/next">다음 →</a>   {/* 링크도 btn을 붙이면 버튼 모양. 밑줄 없음 (07) */}
 ```
+
+링크는 `disabled`가 없으므로, 갈 곳이 없을 때는 `<button className="btn btn-sm" disabled>`로 바꿔 그린다.
 
 ## 폼
 

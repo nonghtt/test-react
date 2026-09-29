@@ -2,13 +2,12 @@
 
 ## 현재 상태
 
-- **진행 중인 실습**: 없음. **06 Context · useReducer 통과** (2026-09-28). 마지막 리뷰 커밋 `a54a990` (06 Part C).
-- **다음 할 일**: **07 라우팅 출제**. 출제 전에 아래 누적 약점 목록 확인. 06에서 효과가 있었던 방식 유지 — ① 컴포넌트를 Claude가 미리 정적으로 나눠 두기 ② 새 API는 사용자가 요청하면 **06과 다른 작은 예제**(다크모드 등)로 한 단계씩 보여 주고 06에 적용하게 하기(리듀서·Context 둘 다 이 방식으로 뚫림) ③ 예측 → 측정 실험.
+- **진행 중인 실습**: **07 라우팅** (2026-09-29 출제, `exercises/07-routing.md`). 세 파트(A 라우트 뼈대 / B URL이 state / C 페이지가 바뀔 때 state), Claude 커밋 5개(A · B-1 · B-2 · C-1 · C-2). 마지막 리뷰 커밋은 06의 `a54a990`, 07 출제 커밋은 `git log`의 `docs: 07 …` 줄.
+- **다음 할 일**: 사용자가 Part A 진행. 파트가 끝났다고 하면 확인 후 Claude가 커밋·푸시. 실험 표는 **예측이 먼저 적혀 있는지** 확인하고 받는다.
 - **06 미답**: 질문 4(`value={{…}}`가 새 객체인데 왜 괜찮았나 / Provider에 무관한 state가 생기면). 사용자가 "나중에 코드 검토로 이해하겠다, 신경 쓰지 마라" — **재촉하지 말 것**. `useMemo`가 자연스럽게 필요해지는 실습에서 다시 만나게 한다.
 - **커밋**: 작업(단계·파트)이 끝나면 **Claude가 커밋·푸시** (2026-09-28, CLAUDE.md). `git diff --stat` 실험은 stat·O/X 뒤에 커밋.
-- 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05에서 `memo`/`useMemo`를 "Vue는 의존성을 자동 추적하지만 React는 다 실행하고 비교한다"로 대비시킨 설명이 특히 잘 통했다. 06의 Context는 Vue의 provide/inject, `useReducer`는 Pinia/Vuex의 mutation·action에 비유할 수 있다.
-- **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06 실습 파일에 미리 설명해 둔 것: `useReducer`의 동작, 리듀서 순수성, `switch`, `createContext`/`useContext`의 리렌더 규칙 3가지(value 변경 시 소비자 리렌더 · `memo`는 못 막음 · Provider의 `children`은 안 그림), `<select>` value가 문자열이라 `===`가 안 맞는 것, `findIndex`, `git diff --stat`.
-- **06 통과 후**: 사용자 요청으로 CardActions·리듀서 참조 구현을 Claude가 작성(2026-09-29, 06 기록 맨 끝). 07 출제 시 "액션은 값보다 의도" 관점 이어 가기.
+- 학습자는 Vue 경험이 있음 (children을 slot에 비유, 반응형 객체 vs 렌더마다 새 값 비교가 잘 통함) — Vue 비유로 설명하면 빠름. 05 `memo`/`useMemo`는 "Vue는 의존성 자동 추적, React는 다 실행하고 비교", 06 Context=provide/inject · `useReducer`=Pinia store가 잘 통했다. 07 실습 파일에 Vue Router 대응표를 넣어 둠(`router-view`↔`Outlet`, `$route.query`↔`useSearchParams` 등).
+- **진행 방식**: 0단계 폐지 · 가독성·관례 지적 제외 · JS 문법과 브라우저/React API 동작은 질문으로 돌리지 말고 바로 설명. "언제 쓰는가"는 학습 대상이므로 질문으로 돌린다. 06에서 효과가 있었던 방식 유지 — ① 컴포넌트를 Claude가 미리 정적으로 나눠 두기(07도 7개 미리 나눔) ② 새 API는 사용자가 요청하면 **07과 다른 작은 예제**로 한 단계씩 ③ 예측 → 측정 실험 ④ 이름이 겹치는 개념은 표로 먼저 구분(07 "이름이 비슷한 것들" 표). 07 실습 파일에 미리 설명해 둔 것: Vue Router 대응표, `BrowserRouter`/`Routes`/`Route`/`Link`/`NavLink`/`Navigate`/`useNavigate` 구분, `Link` vs `<a>`의 메커니즘, URL 값은 문자열·`NaN`, `useSearchParams`의 get/set/`{}`·`null`, `navigate`의 `replace`, `Outlet context` 모양 규칙, `react-router-dom`이 v8에서 없어진 것.
 - 갱신: 2026-09-29
 
 세션이 새로 시작되면 이 블록만 보면 됩니다. 실습이 끝날 때마다 Claude가 갱신합니다.
@@ -307,3 +306,21 @@
 
 - 사용자가 "CardActions가 최소한만 아는가" 검토 요청 → 부분 충족(columns 목적지 계산 · members 순환 규칙 · card 통째로 받음). 이어서 **이상적인 코드를 Claude가 직접 써 달라**고 명시 요청 → 작성.
 - 변경: 액션을 값이 아니라 **의도**로 — `card_moved`는 `direction`('left'/'right'), `assignee_changed` → `assignee_cycled`(값 없음). 다음 열·다음 담당자 계산은 리듀서로(`nextColumnId`·`nextAssigneeId`, 순환 순서는 `[null, ...ids]` 배열로 명시). CardActions는 `id`·`status` 원시값만 받고 columns는 첫/끝 판정에만 씀. 이론상 C-3은 CardActions 0줄.
+
+### 07 라우팅 — 🟡 진행 중
+
+- 출제: 2026-09-29 (`exercises/07-routing.md`, `src/starters/Starter07.jsx`, `src/data/projects.js`, `src/components/exercises/07/` 정적 컴포넌트 7개, `App.jsx`를 `<Layout />`으로, `react-router` 8.4 설치, `ui.css`에 `a.btn:hover` 추가, `docs/UI.md` 갱신)
+- 출제 의도: 프로젝트 허브(목록 · 상세 · 소개 · 404). 라우팅 API 자체는 Vue Router 경험으로 빠르게 넘어갈 것으로 보고, 시간은 **"페이지가 바뀌면 state는 어떻게 되나"**에 쓰게 했다.
+  - **Part A 라우트 뼈대**: 주소 표를 주고 라우트 구성(중첩 방식)은 열어 둠. 실험 A는 주소 5개(`/` · `/projects/23` · `/projects/abc` · `/projects/23/edit` · `/project`)를 치기 전에 화면을 예측 — 질문 1로 "라우터가 판단하는 없음(404) vs 페이지가 판단하는 없음(데이터)"을 가른다. **`id`를 1씩 안 느는 숫자(12, 15, 21…)로** 해서 `id + 1` 이전/다음과 `'12' === 12` 함정을 동시에 겨눔(문자열 규칙은 실습 파일에 미리 설명).
+  - **Part B URL이 state다**: 06 실험 A→B처럼 같은 기능(상태 탭)을 `useState` → `useSearchParams` 두 번 만들고 같은 네 조작(F5 · 상세 갔다 뒤로 · 주소 복사 · 탭 바꾸고 뒤로)으로 O/X 표를 두 번. B-1의 ②에서 탭이 풀리는 것이 "페이지는 이동하면 언마운트된다"를 처음 보여 주고 Part C로 이어진다. **같은 정보 두 곳 재발 지점**: 주소 값을 `useState`에 복사하는 것 — 완성 조건 "`ProjectsPage`에 `useState` 없음" + 질문 2의 재현 절차(정답 예: 지연 → 완료 → 뒤로, 주소는 지연인데 탭은 완료. `useState` 초기값은 마운트 때 한 번만 쓰이고 같은 라우트라 리마운트가 없음).
+  - **Part C-1 param만 바뀔 때**: `CommentBox` 초안이 `/projects/12` → `/projects/15`로 따라가는 버그를 `useRenderCount` **N값**으로 확인(이어지면 리렌더, 1회부터면 마운트). 고치기 조건은 "`useEffect` 없이" — `key`로 리셋. 00의 index `key` 약점과 연결하는 질문 3.
+  - **Part C-2 삭제**: `projects`를 `Layout` `useState` + `Outlet context`로. **`setProjects`는 `Layout` 밖으로 안 나감**(06 `dispatch` 규칙 · "액션은 값보다 의도" 이어 가기 — `onDelete(id)`). prop 이름 불일치 약점 대응으로 **Outlet context 대조**(넣는 줄 + 꺼내는 줄 복사)를 보고 항목에. 실험 C-2는 `replace` 없이 → 있게 삭제 후 뒤로(없으면 「찾을 수 없습니다」). 질문 4에서 `navigate`를 데이터 쪽이 아니라 페이지 핸들러에서 부르는 이유.
+  - **Part C-3 무엇이 살아남나**: 삭제 결과가 NavLink 이동(O) · F5(X) · `<a>`(X)에서 어떻게 되는지. B-2 ①(F5에도 필터 유지)과 대비 — 질문 5에서 세 값(탭 필터=URL · 삭제 결과=Layout 메모리 · 초안=CommentBox)을 "어디 살고 무엇에 사라지나" 표로.
+  - **완료 기준을 화면으로**: 06 약점 메모("완료 기준을 '화면에서 무엇이 보이면'으로 적은 것이 효과")대로 완성 조건마다 주소·클릭·보이는 글자를 적음. lint 마지막 줄 붙여 넣기 유지.
+- **리뷰 때 볼 것**:
+  - 실험 표에 **예측 칸이 실제보다 먼저** 채워졌는지. 없으면 다시.
+  - `ProjectsPage`의 `useState` 잔존(B-2), 탭 숫자·걸러진 목록을 state에 넣었는지(파생 값).
+  - `find`에서 문자열/숫자 비교, 이전/다음을 `id ± 1`로 계산했는지.
+  - C-1을 `useEffect`로 고쳤는지, `key`를 어디에 줬는지(`CommentBox` 또는 그 위) — 이유를 설명하는지.
+  - `setProjects`나 새 배열을 페이지가 만드는지(06 `cards_set`과 같은 문제), Outlet context의 넣는 모양/꺼내는 모양.
+  - 렌더 중 `navigate()` 호출(04 즉시 실행 함정).

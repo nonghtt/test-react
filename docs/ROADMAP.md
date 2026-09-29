@@ -19,7 +19,7 @@
 | 4 | useEffect · 데이터 페칭 | `exercises/04-effects-and-fetching.md` | ✅ |
 | 5 | 커스텀 훅 · ref · 렌더링 이해 | `exercises/05-custom-hooks-refs-rendering.md` | ✅ |
 | 6 | Context · useReducer | `exercises/06-context-and-reducer.md` | ✅ |
-| 7 | 라우팅 | `exercises/07-*.md` | ⬜ |
+| 7 | 라우팅 | `exercises/07-routing.md` | 🟡 |
 | 8 | 종합 미니 프로젝트 | `exercises/08-*.md` | ⬜ |
 | + | React 19 신기능 (선택) | `exercises/09-*.md` | ⬜ |
 | + | 테스트 (선택) | `exercises/10-*.md` | ⬜ |
@@ -106,6 +106,9 @@
 | 중첩 라우트 / `Outlet` | ⬜ | |
 | 프로그래매틱 이동 (`useNavigate`) | ⬜ | |
 | 404 / 리다이렉트 | ⬜ | |
+| URL을 state로 (`useSearchParams`) | ⬜ | 07 Part B. useState 버전과 나란히 측정 |
+| 같은 라우트에서 param만 바뀔 때 state 유지 / `key`로 리셋 | ⬜ | 07 Part C-1 |
+| 라우트 사이에 남는 state (레이아웃 · `useOutletContext`) | ⬜ | 07 Part C-2·C-3 |
 
 ### 8. 종합
 

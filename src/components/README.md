@@ -22,6 +22,7 @@
 - `01/` ProjectCard
 - `02/` Card, CartItems, Form, MenuAlert
 - `03/` InputForm, TodoList, TodoItem
+- `07/` Layout, ProjectsPage, ProjectCard, ProjectDetailPage, CommentBox, AboutPage, NotFoundPage — 라우트 페이지도 여기 둔다
 
 ## 새 실습을 시작할 때
 
